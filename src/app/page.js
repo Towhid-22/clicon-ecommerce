@@ -1,8 +1,12 @@
 import React from 'react'
+import { Button } from '@/components/ui/button'
+import Header from '@/components/common/Header'
 
 const page = () => {
   return (
-    <div className='font-poppins'>page</div>
+    <div>
+      {/* <Header /> */}
+    </div>
   )
 }
 
