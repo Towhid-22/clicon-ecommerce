@@ -1,13 +1,17 @@
-import React from 'react'
-import Container from '@/components/common/Container'
+"use client";
+import React from "react";
+import { useState } from "react";
+import Container from "@/components/common/Container";
 import { BiPhoneCall } from "react-icons/bi";
 import { BsInfoCircle } from "react-icons/bs";
 import { FiRefreshCcw } from "react-icons/fi";
 import { IoLocationOutline } from "react-icons/io5";
 import { PiHeadphones } from "react-icons/pi";
 import { IoIosArrowDown } from "react-icons/io";
+import AllCategory from "../category/AllCategory";
 
 const HeaderBottom = () => {
+  const [allcategorys, setAllCategorys] = useState(false);
   return (
     <div className="border-b-[1px] border-b-[#5F6C72]/30 py-4 bg-white">
       <Container>
@@ -15,9 +19,12 @@ const HeaderBottom = () => {
           <ul className="flex">
             <li
               className="flex items-center gap-2 py-[14px] px-3 hover:bg-[#FA8232] transition-all duration-700 font-medium text-sm leading-5 font-poppins text-[#5F6C72] hover:text-white cursor-pointer relative w-[154px]"
-        
+              onClick={() => setAllCategorys(!allcategorys)}
             >
               All Category <IoIosArrowDown className="w-4 h-4" />
+              {allcategorys && (
+                <AllCategory className="absolute top-0 left-0 z-50" />
+              )}
             </li>
 
             <li className="flex items-center gap-2 py-[14px] px-6 hover:bg-[#FA8232] transition-all duration-700 font-medium text-sm leading-5 font-poppins text-[#5F6C72] hover:text-white cursor-pointer">
@@ -40,7 +47,7 @@ const HeaderBottom = () => {
         </div>
       </Container>
     </div>
-  )
-}
+  );
+};
 
-export default HeaderBottom
+export default HeaderBottom;

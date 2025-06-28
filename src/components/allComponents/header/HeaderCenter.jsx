@@ -1,3 +1,4 @@
+"use client";
 import React from 'react'
 import Container from '@/components/common/Container'
 import Image from 'next/image'
@@ -5,9 +6,12 @@ import { Input } from '@/components/ui/input'
 import { PiShoppingCartSimpleBold, PiUserBold } from "react-icons/pi";
 import { GrFavorite } from "react-icons/gr";
 import { Search } from "lucide-react";
+import Cart from '../popup/Cart';
+import { useState } from 'react';
 
 
 const HeaderCenter = () => {
+    const [cartList, setCartList] = useState(false);
   return (
     <div className="bg-[#1B6392] py-5">
       <Container>
@@ -29,8 +33,11 @@ const HeaderCenter = () => {
           <ul className="flex gap-6 items-center">
             <li
               className="bg-transparent cursor-pointer hover:bg-transparent relative"
+              onClick={() => setCartList(!cartList)}
             >
               <PiShoppingCartSimpleBold className="text-white w-[32px] h-[32px]" />
+              
+              {cartList && <Cart className="absolute top-0 right-0" />}
 
             </li>
             <li className="bg-transparent cursor-pointer hover:bg-transparent">
