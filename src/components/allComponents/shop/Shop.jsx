@@ -3,6 +3,7 @@ import Container from "@/components/common/Container";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import Paginate from "../pagination/Paginate";
 
 const Shop = () => {
   const categories = [
@@ -56,8 +57,8 @@ const Shop = () => {
     },
   ];
   return (
-    <div>
-      <div className="mt-10">
+    <div className="flex gap-6 mt-10 ">
+      <div className="w-[20%]">
         <h1 className="font-poppins uppercase font-medium mb-4">Category</h1>
         <RadioGroup defaultValue="Electronics Devices">
           {categories.map((category) => (
@@ -73,6 +74,9 @@ const Shop = () => {
           ))}
         </RadioGroup>
         <div className="border-b-2 border-[#E4E7E9] my-6 mb-[200px]"></div>
+      </div>
+      <div className="w-[80%]">
+        <Paginate itemsPerPage={8} />
       </div>
     </div>
   );
