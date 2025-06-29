@@ -1,28 +1,32 @@
 "use client";
-import React from 'react'
-import Container from '@/components/common/Container'
-import Image from 'next/image'
-import { Input } from '@/components/ui/input'
+import React from "react";
+import Container from "@/components/common/Container";
+import Image from "next/image";
+import { Input } from "@/components/ui/input";
 import { PiShoppingCartSimpleBold, PiUserBold } from "react-icons/pi";
 import { GrFavorite } from "react-icons/gr";
 import { Search } from "lucide-react";
-import Cart from '../popup/Cart';
-import { useState } from 'react';
-
+import Cart from "../cart/Cart";
+import { useState } from "react";
+import Link from "next/link";
+import SigninPopup from "../signin/SigninPopup";
 
 const HeaderCenter = () => {
-    const [cartList, setCartList] = useState(false);
+  const [cartList, setCartList] = useState(false);
+  const [signin, setSignin] = useState(false);
   return (
     <div className="bg-[#1B6392] py-5">
       <Container>
         <div className="flex items-center justify-between">
-          <Image
-            src="/logo.png"
-            width={160}
-            height={43.82}
-            alt="logo"
-            className="cursor-pointer"
-          />
+          <Link href="/">
+            <Image
+              src="/logo.png"
+              width={160}
+              height={43.82}
+              alt="logo"
+              className="cursor-pointer"
+            />
+          </Link>
           <div className="w-[654px] relative">
             <Input
               placeholder="Search for anything..."
@@ -36,23 +40,21 @@ const HeaderCenter = () => {
               onClick={() => setCartList(!cartList)}
             >
               <PiShoppingCartSimpleBold className="text-white w-[32px] h-[32px]" />
-              
-              {cartList && <Cart className="absolute top-0 right-0" />}
 
+              {cartList && <Cart className="absolute top-0 right-0" />}
             </li>
             <li className="bg-transparent cursor-pointer hover:bg-transparent">
               <GrFavorite className="text-white w-[32px] h-[32px]" />
             </li>
-            <li
-              className="bg-transparent cursor-pointer hover:bg-transparent"
-            >
+            <li onClick={() => setSignin(!signin)} className="bg-transparent relative cursor-pointer hover:bg-transparent">
               <PiUserBold className="text-white w-[32px] h-[32px]" />
+              {signin && <SigninPopup className="absolute top-0 right-0" />}
             </li>
           </ul>
         </div>
       </Container>
     </div>
-  )
-}
+  );
+};
 
-export default HeaderCenter
+export default HeaderCenter;
