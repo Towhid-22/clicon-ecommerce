@@ -2,7 +2,7 @@
 import React from "react";
 import { useState } from "react";
 import Container from "@/components/common/Container";
-import { Button } from "../ui/button";
+import { Button } from "../../ui/button";
 import { ArrowRight } from "lucide-react";
 import Image from "next/image";
 import { IoCloseSharp } from "react-icons/io5";

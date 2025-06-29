@@ -15,8 +15,7 @@ const Product = ({ product, id }) => {
     >
       <div className="relative group">
         <Image
-          // src={product.image}
-          src={"/tozo.png"}
+          src={product.image}
           width={202}
           height={172}
           className="h-[172px] w-[202px] object-contain "
@@ -55,9 +54,9 @@ const Product = ({ product, id }) => {
           <li className="text-[#77878F] text-[12px] leading-4">(738)</li>
         </ul>
         <p className="text-sm leading-5 text-[#191C1F] my-2">
-          TOZO T6 True Wireless Earbuds Bluetooth Headphon...
+          {product.title}
         </p>
-        <p className="text-[#2DA5F3] text-sm leading-5 font-semibold">$500</p>
+        <p className="text-[#2DA5F3] text-sm leading-5 font-semibold">${product.price}</p>
       </div>
     </div>
   );

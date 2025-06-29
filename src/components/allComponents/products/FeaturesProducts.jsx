@@ -167,12 +167,16 @@ const FeaturesProducts = () => {
     },
   ];
 
-  const [activeTab, setActiveTab] = useState(1);
+  const [activeTab, setActiveTab] = useState("All Product");
 
-  const handleTabActive = (id) => {
-    setActiveTab(id);
+  const handleTabActive = (name) => {
+    setActiveTab(name);
   };
-  console.log(activeTab);
+
+  const filterProduct =
+    activeTab === "All Product"
+      ? products
+      : products.filter((item) => item.category == activeTab);
 
   return (
     <section className="mt-18">
@@ -182,7 +186,7 @@ const FeaturesProducts = () => {
             <Discount />
           </div>
           <div className="w-full">
-            <Flex className={`justify-between`}>
+            <Flex className={`justify-between mb-6`}>
               <h3 className="font-semibold text-2xl leading-8 text-[#191C1F]">
                 Featured Products
               </h3>
@@ -190,11 +194,11 @@ const FeaturesProducts = () => {
                 {tabitems.map((item, index) => (
                   <li
                     key={index}
-                    className={`text-sm font-normal leading-5 text-[#5f6c72] p-2 hover:font-semibold hover:text-[#191c1f]${
-                      activeTab === index &&
+                    className={`text-sm font-normal leading-5 cursor-pointer text-[#5f6c72] p-2 hover:font-semibold hover:text-[#191c1f]${
+                      activeTab === item.name &&
                       "font-semibold text-[#191c1f] border-b-2 border-[#fa8232]"
                     }  transition-all duration-300`}
-                    onClick={() => handleTabActive(index)}
+                    onClick={() => handleTabActive(item.name)}
                   >
                     {item.name}
                   </li>
@@ -205,12 +209,14 @@ const FeaturesProducts = () => {
                 </li>
               </ul>
             </Flex>
-            <div className={`grid grid-cols-4 gap-4 mt-6`}>
-              {Array(10)
-                .fill(0)
-                .map((item, index) => (
-                  <Product />
-                ))}
+            <div className={`grid grid-cols-4 gap-4`}>
+             {filterProduct.length == 0 ? (
+                  <div className="text-center col-span-4">No Product Found</div>
+                ) : (
+                  filterProduct?.map((item) => (
+                    <Product id={item.id} product={item} />
+                  ))
+                )}
             </div>
           </div>
         </Flex>

@@ -1,5 +1,5 @@
 import { Poppins } from "next/font/google";
-import Advertisement from "@/components/allComponents/Advertisement";
+import Advertisement from "@/components/allComponents/advertisement/Advertisement";
 import "./globals.css";
 import Header from "@/components/allComponents/header/Header";
 import Footer from "@/components/allComponents/footer/Footer";
