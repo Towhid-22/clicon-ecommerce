@@ -1198,7 +1198,7 @@ const Paginate = ({ itemsPerPage }) => {
   ];
   function Items({ currentItems }) {
     return (
-      <div className="grid grid-cols-4 gap-3">
+      <div className="grid grid-cols-3 gap-3">
         {currentItems &&
           currentItems.map((item) => (
             <Product key={item.id} product={item} id={item.id} />
