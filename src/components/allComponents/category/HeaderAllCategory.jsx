@@ -5,8 +5,7 @@ import { MdKeyboardArrowRight } from "react-icons/md";
 import Link from "next/link";
 import { useState } from "react";
 
-const AllCategory = ({ categoryList }) => {
-  // console.log(categoryList);
+const HeaderAllCategory = ({ categoryList }) => {
   const [openSubcategory, setOpenSubcategory] = useState(false);
   return (
     <div>
@@ -19,7 +18,7 @@ const AllCategory = ({ categoryList }) => {
                   onClick={() => setOpenSubcategory(item._id)}
                   className="flex items-center capitalize gap-2 justify-between py-2 px-4 font-poppins font-normal text-sm leading-5 text-[#5F6C72] hover:font-medium hover:text-[#191C1F] group hover:bg-[#F2F4F5] transition-all duration-300"
                 >
-                  <Link href="/shop">{item.name}</Link>
+                  <Link href="/">{item.name}</Link>
                   {item?.subcategory &&
                     item.subcategory.length > 0 &&
                     openSubcategory === item._id && (
@@ -38,7 +37,7 @@ const AllCategory = ({ categoryList }) => {
                           key={index}
                         >
                           <Link
-                            href={"/"}
+                            href={"/shop"}
                             className="py-2 px-4 font-public_sans font-normal text-sm leading-5 text-[#77878F] hover:bg-[#f2f4f5] hover:text-[#191C1F]"
                           >
                             {item.name}
@@ -57,4 +56,4 @@ const AllCategory = ({ categoryList }) => {
   );
 };
 
-export default AllCategory;
+export default HeaderAllCategory;

@@ -8,7 +8,7 @@ import { FiRefreshCcw } from "react-icons/fi";
 import { IoLocationOutline } from "react-icons/io5";
 import { PiHeadphones } from "react-icons/pi";
 import { IoIosArrowDown } from "react-icons/io";
-import AllCategory from "../category/AllCategory";
+import AllCategory from "../category/HeaderAllCategory";
 import axios from "axios";
 
 const HeaderBottom = () => {
@@ -25,6 +25,8 @@ const HeaderBottom = () => {
   });
 
   const [showAllCategory, setShowAllCategory] = useState(false);
+
+
   const categoryRef = useRef(null);
   useEffect(() => {
     const handleClickOutside = (event) => {

@@ -6,6 +6,7 @@ import { GrFavorite } from "react-icons/gr";
 import { FiShoppingCart } from "react-icons/fi";
 import { FiEye } from "react-icons/fi";
 import Image from "next/image";
+import Link from "next/link";
 
 const Product = ({ product, id }) => {
   return (
@@ -29,7 +30,9 @@ const Product = ({ product, id }) => {
               <FiShoppingCart className="w-6 h-6" />
             </li>
             <li className="w-12 h-12 bg-white text-black flex items-center justify-center rounded-full hover:bg-[#FA8232] hover:text-white transition-all duration-300 cursor-pointer">
-              <FiEye className="w-6 h-6" />
+              <Link href={`/product`} className="w-6 h-6">
+                <FiEye className="w-6 h-6" />
+              </Link>
             </li>
           </ul>
         </div>

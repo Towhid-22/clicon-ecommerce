@@ -2,7 +2,7 @@ import React from "react";
 import { Button } from "@/components/ui/button";
 import Header from "@/components/allComponents/header/Header";
 import Banner from "@/components/allComponents/banner/Banner";
-import AllCategory from "@/components/allComponents/category/AllCategory";
+import AllCategory from "@/components/allComponents/category/HeaderAllCategory";
 import Category from "@/components/allComponents/category/Category";
 import Service from "@/components/allComponents/service/Service";
 import FeaturesProducts from "@/components/allComponents/products/FeaturesProducts";

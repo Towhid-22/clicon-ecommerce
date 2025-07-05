@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Container from "@/components/common/Container";
 import React from "react";
 import Discount from "./Discount";
@@ -7,6 +7,7 @@ import Flex from "@/components/common/Flex";
 import Link from "next/link";
 import { HiOutlineArrowRight } from "react-icons/hi";
 import Product from "./Product";
+import axios from "axios";
 
 const FeaturesProducts = () => {
   const tabitems = [
@@ -167,6 +168,7 @@ const FeaturesProducts = () => {
     },
   ];
 
+  
   const [activeTab, setActiveTab] = useState("All Product");
 
   const handleTabActive = (name) => {
@@ -210,13 +212,13 @@ const FeaturesProducts = () => {
               </ul>
             </Flex>
             <div className={`grid grid-cols-4 gap-4`}>
-             {filterProduct.length == 0 ? (
-                  <div className="text-center col-span-4">No Product Found</div>
-                ) : (
-                  filterProduct?.map((item) => (
-                    <Product id={item.id} product={item} />
-                  ))
-                )}
+              {filterProduct.length == 0 ? (
+                <div className="text-center col-span-4">No Product Found</div>
+              ) : (
+                filterProduct?.map((item) => (
+                  <Product id={item.id} product={item} />
+                ))
+              )}
             </div>
           </div>
         </Flex>

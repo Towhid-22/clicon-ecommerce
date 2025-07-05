@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import ReactDOM from "react-dom";
 import ReactPaginate from "react-paginate";
 import Product from "../products/Product";
-import { GrLinkPrevious } from "react-icons/gr";
+import axios from "axios";
 
 const Paginate = ({ itemsPerPage }) => {
   const items = [
@@ -1196,6 +1196,17 @@ const Paginate = ({ itemsPerPage }) => {
       },
     },
   ];
+  const [allProtucts, setAllProducts] = useState([]);
+    useEffect(() => {
+      function protuctList() {
+        axios
+          .get(`${process.env.NEXT_PUBLIC_URL}/api/v1/product/get-products`)
+          .then((res) => {
+            setAllProducts(res.data.data);
+          });
+      }
+      protuctList();
+    }, []);
   function Items({ currentItems }) {
     return (
       <div className="grid grid-cols-3 gap-3">
