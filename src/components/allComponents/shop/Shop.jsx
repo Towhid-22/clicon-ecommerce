@@ -24,7 +24,7 @@ const Shop = () => {
       </div>
       <div className="w-[75%]">
         <Sort />
-        <Paginate itemsPerPage={18} />
+        <Paginate itemsPerPage={8} />
       </div>
     </div>
   );

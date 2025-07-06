@@ -8,63 +8,6 @@ import { useState } from "react";
 
 const Subcategory = ({subCategory}) => {
   console.log(subCategory)
-  // const [allSubCategor, setAllSubCategoryList] = useState([]);
-  // const allSubcategory = [
-  //   {
-  //     id: 1,
-  //     name: "All",
-  //   },
-  //   {
-  //     id: 2,
-  //     name: "iPhone",
-  //   },
-  //   {
-  //     id: 3,
-  //     name: "Sansung",
-  //   },
-  //   {
-  //     id: 4,
-  //     name: "Realme",
-  //   },
-  //   {
-  //     id: 5,
-  //     name: "Xiaomi",
-  //   },
-  //   {
-  //     id: 6,
-  //     name: "Oppo",
-  //   },
-  //   {
-  //     id: 7,
-  //     name: "Vivo",
-  //   },
-  //   {
-  //     id: 8,
-  //     name: "OnePlus",
-  //   },
-  //   {
-  //     id: 9,
-  //     name: "Huawei",
-  //   },
-  //   {
-  //     id: 10,
-  //     name: "Huawei",
-  //   },
-  //   {
-  //     id: 11,
-  //     name: "Tecno",
-  //   },
-  // ];
-  // useEffect(() => {
-  //   function allSubcategory() {
-  //     axios
-  //       .get(`${process.env.NEXT_PUBLIC_URL}/api/v1/category/getcategories`)
-  //       .then((res) => {
-  //         setAllSubCategoryList(res.data.data);
-  //       });
-  //   }
-  //   allSubcategory();
-  // }, []);
   return (
     <div>
       <Container>

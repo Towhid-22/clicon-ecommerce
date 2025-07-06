@@ -33,7 +33,7 @@ const PricesRange = () => {
   ];
   return (
     <div>
-      <div>
+      <div className="mt-6">
         <h1 className="font-poppins uppercase font-medium mb-4">Price Range</h1>
         <input type="range" className={`shadow-none accent-[#FA8232] w-full`} />
         <div className="flex items-center gap-3 justify-between my-4">

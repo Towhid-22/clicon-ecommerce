@@ -15,11 +15,12 @@ const Product = ({ product, id }) => {
       className="  border border-[#E4E7E9] p-4 rounded-[3px] hover:shadow-xl flex flex-col items-center"
     >
       <div className="relative group">
-        <Image
-          src={product.image}
+        <img
+          src={product?.thumbnail}
           width={202}
           height={172}
-          className="h-[172px] w-[202px] object-contain "
+          className=" object-contain "
+          alt="product"
         />
         <div className="absolute bg-black/50 top-0 left-0 opacity-0 group-hover:opacity-100 w-full h-full z-50 transition-all duration-300 cursor-pointer">
           <ul className="h-full flex items-center justify-center gap-4">
@@ -30,7 +31,7 @@ const Product = ({ product, id }) => {
               <FiShoppingCart className="w-6 h-6" />
             </li>
             <li className="w-12 h-12 bg-white text-black flex items-center justify-center rounded-full hover:bg-[#FA8232] hover:text-white transition-all duration-300 cursor-pointer">
-              <Link href={`/product`} className="w-6 h-6">
+              <Link href={`/shop/${product.slug}`} className="w-6 h-6">
                 <FiEye className="w-6 h-6" />
               </Link>
             </li>
@@ -56,10 +57,10 @@ const Product = ({ product, id }) => {
           </li>
           <li className="text-[#77878F] text-[12px] leading-4">(738)</li>
         </ul>
-        <p className="text-sm leading-5 text-[#191C1F] my-2">
-          {product.title}
+        <p className="text-sm leading-5 text-[#191C1F] my-2">{product.title}</p>
+        <p className="text-[#2DA5F3] text-sm leading-5 font-semibold">
+          ${product.price}
         </p>
-        <p className="text-[#2DA5F3] text-sm leading-5 font-semibold">${product.price}</p>
       </div>
     </div>
   );
