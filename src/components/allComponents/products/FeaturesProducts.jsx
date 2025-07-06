@@ -8,11 +8,12 @@ import Link from "next/link";
 import { HiOutlineArrowRight } from "react-icons/hi";
 import Product from "../../common/Product";
 import axios from "axios";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const FeaturesProducts = () => {
   const [featureProduct, setFeatureProduct] = useState([]);
   const [allCategoryList, setAllCategoryList] = useState([]);
- 
+  const [loading, setLoading] = useState(true);
 
   function categoryList() {
     axios
@@ -27,7 +28,7 @@ const FeaturesProducts = () => {
       .get(`http://localhost:4000/api/v1/product/get-features-products`)
       .then((res) => {
         setFeatureProduct(res.data.data);
-        
+        setLoading(false);
       })
       .catch((err) => {
         console.log(err);
@@ -48,7 +49,27 @@ const FeaturesProducts = () => {
       ? featureProduct
       : featureProduct.filter((item) => item.category.name === activeTab);
 
- 
+  if (loading) {
+    return (
+      <Container>
+        <div className="flex justify-center items-center">
+          <div className="flex flex-col space-y-3">
+            <Skeleton className="h-[125px] w-[250px] rounded-xl" />
+            <div className="grid grid-cols-4 gap-4">
+              {Array.from({ length: 4 }).map((_, index) => (
+                <div>
+                  <div className="space-y-2">
+                    <Skeleton className="h-4 w-[250px]" />
+                    <Skeleton className="h-4 w-[200px]" />
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </Container>
+    );
+  }
 
   return (
     <section className="mt-18">
@@ -87,7 +108,7 @@ const FeaturesProducts = () => {
                   <div className="text-center col-span-4">No Product Found</div>
                 ) : (
                   filterProduct?.map((item, index) => (
-                    <Product key={index} id={index} product={item}/>
+                    <Product key={index} id={index} product={item} />
                   ))
                 )}
               </div>
