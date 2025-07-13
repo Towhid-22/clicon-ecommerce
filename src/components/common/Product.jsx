@@ -12,9 +12,9 @@ const Product = ({ product, id }) => {
   return (
     <div
       key={id}
-      className="  border border-[#E4E7E9] p-4 rounded-[3px] hover:shadow-xl flex flex-col items-center"
+      className="  border border-[#E4E7E9] p-4 rounded-[3px] hover:shadow-xl "
     >
-      <div className="relative group">
+      <div className="relative group flex flex-col items-center">
         <img
           src={product?.thumbnail}
           width={202}

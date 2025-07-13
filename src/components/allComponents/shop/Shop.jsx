@@ -5,11 +5,12 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import Paginate from "../pagination/Paginate";
 import { Input } from "@/components/ui/input";
-import CategoryList from "./CategoryList";
+import CategoryList from "./ShopCategoryList";
 import PricesRange from "./PricesRange";
 import PopularTag from "./PopularBrands";
 import PopularBrands from "./PopularTags";
 import Sort from "./Sort";
+import Breadcrumb from "@/components/common/Breadcrumb";
 
 const Shop = () => {
   
@@ -24,7 +25,7 @@ const Shop = () => {
       </div>
       <div className="w-[75%]">
         <Sort />
-        <Paginate itemsPerPage={8} />
+        <Paginate itemsPerPage={6} />
       </div>
     </div>
   );

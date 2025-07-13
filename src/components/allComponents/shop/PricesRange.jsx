@@ -1,8 +1,11 @@
-import React from "react";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+"use client";
+import React, { useState } from "react";
 import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
+import { useDispatch } from "react-redux";
+import { pricerange } from "@/lib/slices/productSlice";
+
+
 
 const PricesRange = () => {
   const priceRange = [
@@ -31,36 +34,61 @@ const PricesRange = () => {
       price: "$500 to $1,000",
     },
   ];
+
+  const dispatch = useDispatch();
+
+  const [minValue, setMinValue] = useState(0);
+  const [maxValue, setMaxValue] = useState(200000);
+  const handleRangeChange = (value, type) => {
+    if (type === "min") {
+      const newValue = Math.min(value, maxValue);
+      setMinValue(newValue);
+       dispatch(pricerange([newValue, maxValue]));
+    }else{
+      const newValue = Math.max(value, minValue);
+      setMaxValue(newValue);
+      dispatch(pricerange([minValue, newValue]));
+    }
+  };
   return (
     <div>
       <div className="mt-6">
         <h1 className="font-poppins uppercase font-medium mb-4">Price Range</h1>
-        <input type="range" className={`shadow-none accent-[#FA8232] w-full`} />
-        <div className="flex items-center gap-3 justify-between my-4">
-          <Input
-            placeholder="Min price"
-            type="text"
-            className={`shadow-none outline-none ring-0`}
+        <div className=" relative mb-15">
+          <p>Min Price {minValue}</p>
+          <input
+            onChange={(e) => handleRangeChange(e.target.value, "min")}
+            value={minValue}
+            type="range"
+            min={0}
+            max={200000}
+            step={100}
+            className={` accent-[#FA8232] w-full `}
           />
-          <Input
-            placeholder="Max price"
-            type="text"
-            className={`shadow-none`}
+          <p>Max Price {maxValue} </p>
+          <input
+            value={maxValue}
+            onChange={(e) => handleRangeChange(e.target.value, "max")}
+            type="range"
+            min={0}
+            max={200000}
+            step={100}
+            className={` accent-[#FA8232] w-full`}
           />
         </div>
 
         <div className="flex flex-col gap-y-2">
           {priceRange.map((tag, index) => (
-          <div key={index} className="flex items-center gap-x-2 gap-y-3">
-            <Checkbox id={tag.price} />
-            <Label
-              htmlFor={tag.price}
-              className={`text-[#475156] text-sm leading-5 font-normal cursor-pointer hover:text-[#191C1F] hover:font-medium`}
-            >
-              {tag.price}
-            </Label>
-          </div>
-        ))}
+            <div key={index} className="flex items-center gap-x-2 gap-y-3">
+              <Checkbox id={tag.price} />
+              <Label
+                htmlFor={tag.price}
+                className={`text-[#475156] text-sm leading-5 font-normal cursor-pointer hover:text-[#191C1F] hover:font-medium`}
+              >
+                {tag.price}
+              </Label>
+            </div>
+          ))}
         </div>
         <div className="border-b-2 border-[#E4E7E9] my-6 "></div>
       </div>
