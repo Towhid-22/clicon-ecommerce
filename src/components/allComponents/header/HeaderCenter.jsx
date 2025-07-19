@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import Container from "@/components/common/Container";
 import Image from "next/image";
 import { Input } from "@/components/ui/input";
@@ -14,6 +14,22 @@ import SigninPopup from "../signin/SigninPopup";
 const HeaderCenter = () => {
   const [cartList, setCartList] = useState(false);
   const [signin, setSignin] = useState(false);
+  const cartRef = useRef(null);
+  const signinRef = useRef(null);
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (cartRef.current && !cartRef.current.contains(event.target)) {
+        setCartList(false);
+      }
+      if (signinRef.current && !signinRef.current.contains(event.target)) {
+        setSignin(false);
+      }
+    };
+    document.addEventListener("click", handleClickOutside);
+    return () => {
+      document.removeEventListener("click", handleClickOutside);
+    };
+  }, []);
   return (
     <div className="bg-[#1B6392] py-5">
       <Container>
@@ -36,8 +52,9 @@ const HeaderCenter = () => {
           </div>
           <ul className="flex gap-6 items-center">
             <li
+              ref={cartRef}
               className="bg-transparent cursor-pointer hover:bg-transparent relative"
-              onClick={() => setCartList(!cartList)}
+              onClick={() => setCartList(true)}
             >
               <PiShoppingCartSimpleBold className="text-white w-[32px] h-[32px]" />
 
@@ -46,7 +63,11 @@ const HeaderCenter = () => {
             <li className="bg-transparent cursor-pointer hover:bg-transparent">
               <GrFavorite className="text-white w-[32px] h-[32px]" />
             </li>
-            <li onClick={() => setSignin(!signin)} className="bg-transparent relative cursor-pointer hover:bg-transparent">
+            <li
+              ref={signinRef}
+              onClick={() => setSignin(true)}
+              className="bg-transparent relative cursor-pointer hover:bg-transparent"
+            >
               <PiUserBold className="text-white w-[32px] h-[32px]" />
               {signin && <SigninPopup className="absolute top-0 right-0" />}
             </li>

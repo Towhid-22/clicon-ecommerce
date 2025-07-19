@@ -39,33 +39,38 @@ const Category = () => {
         {allCategoryList.length > 5 && <CarouselPrevious />}
         <CarouselContent className="-ml-1">
           {allCategoryList.map((item, index) => (
+            // <Link href="/category" className="p-1">
+              
+            // </Link>
             <CarouselItem
-              key={index}
-              className="pl-1 md:basis-1/2 lg:basis-1/6"
-            >
-              <Link href="/" className="p-1">
-                <Card className={`rounded-[6px] w-[205px] h-[236px]`}>
-                  <CardContent className="flex aspect-square items-center justify-center p-2">
-                    <div className="flex flex-col items-center justify-between">
-                      <Link href={`/shop/${item.slug}`}>
-                        <img
-                          src={item.image}
-                          alt={item.name}
-                          width={148}
-                          height={148}
-                          className="w-[148px] h-[148px]"
-                        />
-                      </Link>
-                      <CardTitle
-                        className={`text-center font-poppins font-medium text-base leading-6 text-[#191c1f]`}
-                      >
-                        {item.name}
-                      </CardTitle>
-                    </div>
-                  </CardContent>
-                </Card>
-              </Link>
-            </CarouselItem>
+                key={index}
+                className="pl-1 md:basis-1/2 lg:basis-1/6"
+              >
+                <Link href="/category" className="p-1">
+                  <Card className={`rounded-[6px] w-[205px] h-[236px]`}>
+                    <CardContent className="flex aspect-square items-center justify-center p-2">
+                      <div className="flex flex-col items-center justify-between">
+                        <Link href={`/category/${item.slug}`}>
+                          <img
+                            src={item.image}
+                            alt={item.name}
+                            width={148}
+                            height={148}
+                            className="w-[148px] h-[148px]"
+                          />
+                        </Link>
+                        <CardTitle
+                          className={`text-center font-poppins font-medium text-base leading-6 text-[#191c1f]`}
+                        >
+                          <Link href={`/shop/${item.slug}`}>
+                            {item.name}
+                          </Link>
+                        </CardTitle>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </Link>
+              </CarouselItem>
           ))}
         </CarouselContent>
         {allCategoryList.length > 5 && <CarouselNext />}

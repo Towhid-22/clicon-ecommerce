@@ -8,15 +8,16 @@ import { FiEye } from "react-icons/fi";
 import Image from "next/image";
 import Link from "next/link";
 
-const Product = ({ product, id }) => {
+const Product = ({ product, id, onClick }) => {
   return (
     <div
+      onClick={onClick}
       key={id}
       className="  border border-[#E4E7E9] p-4 rounded-[3px] hover:shadow-xl "
     >
       <div className="relative group flex flex-col items-center">
         <img
-          src={product?.thumbnail}
+          src={product?.image}
           width={202}
           height={172}
           className=" object-contain "
@@ -31,9 +32,7 @@ const Product = ({ product, id }) => {
               <FiShoppingCart className="w-6 h-6" />
             </li>
             <li className="w-12 h-12 bg-white text-black flex items-center justify-center rounded-full hover:bg-[#FA8232] hover:text-white transition-all duration-300 cursor-pointer">
-              <Link href={`/shop/${product.slug}`} className="w-6 h-6">
-                <FiEye className="w-6 h-6" />
-              </Link>
+              <FiEye className="w-6 h-6" />
             </li>
           </ul>
         </div>

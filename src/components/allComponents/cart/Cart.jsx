@@ -16,7 +16,7 @@ const Cart = () => {
           </h3>
           <div className="border-y-2 border-y-[#E4E7E9] py-4">
             <div className=" flex items-center justify-between">
-              <Image src="/cart1.png" width={80} height={80} />
+              <Image src="/cart1.png" width={80} height={80} alt="cart1" />
               <div>
                 <p className="font-poppins text-sm leading-5 text-[#191C1F] max-w-[200px] mb-2">
                   Canon EOS 1500D DSLR Camera Body+ 18-55 mm
@@ -29,7 +29,7 @@ const Cart = () => {
               <IoClose className="text-[#929FA5] w-6 h-6 cursor-pointer" />
             </div>
             <div className=" flex items-center justify-between mt-4">
-              <Image src="/cart2.png" width={80} height={80} />
+              <Image src="/cart2.png" width={80} height={80} alt="cart2" />
               <div>
                 <p className="font-poppins text-sm leading-5 text-[#191C1F] max-w-[200px] mb-2">
                   Canon EOS 1500D DSLR Camera Body+ 18-55 mm

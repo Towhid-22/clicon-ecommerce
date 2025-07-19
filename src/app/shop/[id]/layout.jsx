@@ -1,8 +1,8 @@
 import React from 'react'
 
 export const metadata = {
-  title: "Compare",
-  description: "Clicon ecommerce compare page",
+  title: "Product",
+  description: "Clicon ecommerce product page",
 };
 
 

@@ -25,11 +25,22 @@ const Breadcrumb = () => {
             <Link href="/" className="flex">
               <GoHome className="mr-1 text-xl" /> Home
             </Link>
-            <MdOutlineKeyboardArrowRight className="text-xl" />
+            {/* <MdOutlineKeyboardArrowRight className="text-xl" /> */}
           </li>
           {breadcrub.map((item, index) => (
-            <li className="flex items-center text-[#5F6C72] font-poppins text-sm leading-5 mx-1">
-              <Link href={item.href}>{item.name}</Link>
+            <li
+              className={`flex items-center text-[#5F6C72] font-poppins text-sm leading-5 mx- flex-row-reverse `}
+            >
+              <Link
+                href={item.href}
+                className={`capitalize ${
+                  index === breadcrub.length - 1
+                    ? "text-[#2DA5F3]"
+                    : "text-[#5F6C72]"
+                }`}
+              >
+                {item.name}
+              </Link>
               <MdOutlineKeyboardArrowRight className="text-xl" />
             </li>
           ))}
