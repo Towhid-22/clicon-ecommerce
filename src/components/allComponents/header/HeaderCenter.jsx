@@ -9,7 +9,7 @@ import { Search } from "lucide-react";
 import Cart from "../cart/Cart";
 import { useState } from "react";
 import Link from "next/link";
-import SigninPopup from "../signin/SigninPopup";
+import SigninPopup from "../account/Signin";
 
 const HeaderCenter = () => {
   const [cartList, setCartList] = useState(false);

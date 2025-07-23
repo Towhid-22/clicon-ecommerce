@@ -45,10 +45,9 @@ const FeaturesProducts = () => {
   };
 
   const filterProduct =
-    activeTab === "All Product"
+    activeTab == "All Product"
       ? featureProduct
-      : featureProduct.filter((item) => item.category.name === activeTab);
-
+      : featureProduct.filter((item) => item.category?.name == activeTab);
   if (loading) {
     return (
       <Container>
@@ -83,12 +82,12 @@ const FeaturesProducts = () => {
               <h3 className="font-semibold text-2xl leading-8 text-[#191C1F]">
                 Featured Products
               </h3>
-              <ul className="flex w-[600px] overflow-y-auto">
+              <ul className="flex">
                 {allCategoryList.map((item, index) => (
                   <li
                     key={index}
                     onClick={() => handleTabActive(item.name)}
-                    className={` text-sm font-normal leading-5 cursor-pointer text-[#5f6c72] p-2 hover:font-semibold hover:text-[#191c1f]${
+                    className={`text-sm font-normal leading-5 cursor-pointer text-[#5f6c72] p-2 hover:font-semibold hover:text-[#191c1f]${
                       activeTab === item.name &&
                       "font-semibold text-[#191c1f] border-b-2 border-[#fa8232]"
                     }  transition-all duration-300`}
@@ -96,11 +95,11 @@ const FeaturesProducts = () => {
                     {item.name}
                   </li>
                 ))}
-              </ul>
                 <li className="flex items-center justify-between gap-2 ml-4 font-semibold text-sm leading-5 text-[#FA8232]">
                   <Link href={"/shop"}>Browse All Product</Link>
                   <HiOutlineArrowRight className="w-5 h-5" />
                 </li>
+              </ul>
             </Flex>
             <div className="mt-6">
               <div className={`grid grid-cols-4 gap-4`}>
@@ -110,7 +109,7 @@ const FeaturesProducts = () => {
                   filterProduct?.map((item, index) => (
                     <Product key={index} id={index} product={item} />
                   ))
-                )}
+                )} 
               </div>
             </div>
           </div>

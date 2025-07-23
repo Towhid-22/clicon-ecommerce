@@ -9,15 +9,17 @@ import Image from "next/image";
 import Link from "next/link";
 
 const Product = ({ product, id, onClick }) => {
+
   return (
     <div
       onClick={onClick}
       key={id}
-      className="  border border-[#E4E7E9] p-4 rounded-[3px] hover:shadow-xl "
+      className="border border-[#E4E7E9] p-4 rounded-[3px] hover:shadow-xl "
     >
       <div className="relative group flex flex-col items-center">
-        <img
-          src={product?.image}
+        <Image
+          // src={`${process.env.NEXT_PUBLIC_URL}${product?.thumbnail}`}
+          src={product?.thumbnail || product.image}
           width={202}
           height={172}
           className=" object-contain "
@@ -32,7 +34,9 @@ const Product = ({ product, id, onClick }) => {
               <FiShoppingCart className="w-6 h-6" />
             </li>
             <li className="w-12 h-12 bg-white text-black flex items-center justify-center rounded-full hover:bg-[#FA8232] hover:text-white transition-all duration-300 cursor-pointer">
-              <FiEye className="w-6 h-6" />
+              <Link href={`/shop/${product._id}`}>
+                <FiEye className="w-6 h-6" />
+              </Link>
             </li>
           </ul>
         </div>
@@ -57,6 +61,7 @@ const Product = ({ product, id, onClick }) => {
           <li className="text-[#77878F] text-[12px] leading-4">(738)</li>
         </ul>
         <p className="text-sm leading-5 text-[#191C1F] my-2">{product.title}</p>
+        <p>{product.description}</p>
         <p className="text-[#2DA5F3] text-sm leading-5 font-semibold">
           ${product.price}
         </p>

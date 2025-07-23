@@ -1,7 +1,7 @@
 "use client";
-import { useParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { useParams } from "next/navigation";
 import Breadcrumb from "@/components/common/Breadcrumb";
 import Container from "@/components/common/Container";
 import Link from "next/link";
@@ -21,27 +21,36 @@ import { PiShoppingCartSimple } from "react-icons/pi";
 import { BsCopy, BsHeart } from "react-icons/bs";
 import { FiRefreshCcw } from "react-icons/fi";
 
-
-
 const page = () => {
-  const { name } = useParams();
+  const { id } = useParams();
+
+  const [product, setProduct] = useState({});
+  const [variant, setVariant] = useState();
+
   const [count, setCount] = useState(0);
   const handleIncrement = () => setCount((prev) => prev + 1);
   const handleDecrement = () => setCount((prev) => prev - 1);
 
   useEffect(() => {
-    function getSingleProduct() {
+    async function getSingleProduct() {
       axios
         .get(
-          `${process.env.NEXT_PUBLIC_API_URL}/api/v1/product/single-product/${name}`
+          `${process.env.NEXT_PUBLIC_URL}/api/v1/product/single-product/${id}`
         )
         .then((res) => {
-          console.log("single product", res.data)
+          setProduct(res.data.data);
+          if (res.data.data.variant.length > 0) {
+            setVariant(res.data.data.variant[0]);
+          }
         });
     }
-
     getSingleProduct();
   }, []);
+
+  let handleVariant = (item) => {
+    setVariant(item);
+  };
+  console.log(variant);
 
   return (
     <div>
@@ -51,69 +60,20 @@ const page = () => {
           <Flex className="gap-4">
             {/* images */}
             <div className="w-[50%]">
-              <Link href="/product">
+              <Image
+                src={product?.thumbnail || product.image}
+                width={616}
+                height={464}
+                alt="banner"
+              />
+              <div className="flex gap-2 mt-6">
                 <Image
-                  src="/Product_images/main.png"
-                  width={616}
-                  height={464}
+                  src={product?.thumbnail || product.image}
+                  width={96}
+                  height={96}
+                  className="border rounded-[2px] w-24 h-24"
                   alt="banner"
                 />
-              </Link>
-              <div className="flex gap-2 mt-6">
-                <Link href="/product" className="w-24 h-24">
-                  <Image
-                    src="/Product_images/main.png"
-                    width={96}
-                    height={96}
-                    className="border rounded-[2px]"
-                    alt="banner"
-                  />
-                </Link>
-                <Link href="/product">
-                  <Image
-                    src="/Product_images/main.png"
-                    width={96}
-                    className="border rounded-[2px]"
-                    height={96}
-                    alt="banner"
-                  />
-                </Link>
-                <Link href="/product" className="w-24 h-24">
-                  <Image
-                    src="/Product_images/main.png"
-                    width={96}
-                    height={96}
-                    className="border rounded-[2px]"
-                    alt="banner"
-                  />
-                </Link>
-                <Link href="/product">
-                  <Image
-                    src="/Product_images/main.png"
-                    width={96}
-                    height={96}
-                    className="border rounded-[2px]"
-                    alt="banner"
-                  />
-                </Link>
-                <Link href="/product" className="w-24 h-24">
-                  <Image
-                    src="/Product_images/main.png"
-                    width={96}
-                    height={96}
-                    className="border rounded-[2px]"
-                    alt="banner"
-                  />
-                </Link>
-                <Link href="/product">
-                  <Image
-                    src="/Product_images/main.png"
-                    width={96}
-                    height={96}
-                    className="border rounded-[2px]"
-                    alt="banner"
-                  />
-                </Link>
               </div>
             </div>
             <div className="w-[50%]">
@@ -134,93 +94,93 @@ const page = () => {
                 </li>
               </ul>
               {/* product name */}
+              <h3 className="text-xl leading-7 text-[#191C1F] mb-4 font-bold">
+                {product?.title}
+              </h3>
               <h3 className="text-xl leading-7 text-[#191C1F] mb-4">
-                2020 Apple MacBook Pro with Apple M1 Chip (13-inch, 8GB RAM,
-                256GB SSD Storage) - Space Gray
+                {product?.description}
               </h3>
               {/* availability */}
               <div className="flex justify-between mb-6">
                 <div className="flex flex-col gap-3 text-sm">
-                  <p className="leading-5 font-semibold text-xl">
-                    <span className="text-[#5F6C72] font-normal">Sku:</span>{" "}
-                    A264671
-                  </p>
+                  {product?.variant && (
+                    <p className="leading-5 font-semibold text-xl">
+                      <span className="text-[#5F6C72] font-normal">Sku:</span>{" "}
+                      {variant?.sku || product?.sku || "N/A"}
+                    </p>
+                  )}
                   <p className="leading-5 font-semibold text-xl">
                     <span className="text-[#5F6C72] font-normal">Brand:</span>{" "}
                     Apple
                   </p>
                 </div>
                 <div className="flex flex-col gap-3 text-sm">
-                  <p className="leading-5 font-semibold text-xl text-[#2DB224]">
-                    <span className="text-[#5F6C72] font-normal">
-                      Availability:
-                    </span>{" "}
-                    In Stock
+                  <p className="leading-5  text-xl text-[#5F6C72]">
+                    Availability:
+                    {!variant ? (
+                      <span className="text-[#2DB224] font-semibold">
+                        {" "}
+                        Available
+                      </span>
+                    ) : variant.stock > 0 ? (
+                      <span className="text-[#2DB224] font-semibold">
+                        {" "}
+                        In Stock
+                      </span>
+                    ) : (
+                      <span className="text-[#FF0000] font-semibold">
+                        {" "}
+                        Out of Stock
+                      </span>
+                    )}
                   </p>
                   <p className="leading-5 font-semibold text-xl">
                     <span className="text-[#5F6C72] font-normal">
                       Category:
                     </span>{" "}
-                    Electronics Devices
+                    {product?.category?.name}
                   </p>
                 </div>
               </div>
               {/* price */}
               <div className="flex items-center gap-3 border-b-2 border-[#E4E7E9] pb-6">
                 <h3 className="text-2xl leading-8 font-semibold text-[#2DA5F3]">
-                  $1699
+                  ${product?.price}
                 </h3>
-                <span className="text-[#77878F] leading-6">
+                {/* <span className="text-[#77878F] leading-6">
                   <del>$1999.00</del>
                 </span>
                 <button className="font-semibold text-sm leading-5 text-[#191C1F] bg-[#EFD33D] px-2.5 py-1.5 rounded-[3px]">
                   21% OFF
-                </button>
+                </button> */}
               </div>
 
               {/* =============== */}
               <div className="flex justify-between items-center my-6">
-                <div className="flex flex-col gap-4">
+                <div className="flex flex-col gap-4 w-[312px]">
                   {/* color */}
-                  <div>
-                    <Label
-                      htmlFor="color"
-                      className={`mb-2 text-[#191C1F] text-sm leading-5`}
-                    >
-                      Color
-                    </Label>
-                    <RadioGroup
-                      defaultValue="Red"
-                      className={`grid grid-cols-3`}
-                    >
-                      <div className="flex items-center gap-3">
-                        <RadioGroupItem value="Red" id="r1" />
-                        <Label htmlFor="r1">Red</Label>
-                      </div>
-                      <div className="flex items-center gap-3">
-                        <RadioGroupItem value="Blue" id="r2" />
-                        <Label htmlFor="r2">Blue</Label>
-                      </div>
-                      <div className="flex items-center gap-3">
-                        <RadioGroupItem value="Green" id="r3" />
-                        <Label htmlFor="r3">Green</Label>
-                      </div>
-                      <div className="flex items-center gap-3">
-                        <RadioGroupItem value="Yellow" id="r4" />
-                        <Label htmlFor="r4">Yellow</Label>
-                      </div>
-                      <div className="flex items-center gap-3">
-                        <RadioGroupItem value="Pink" id="r5" />
-                        <Label htmlFor="r5">Pink</Label>
-                      </div>
-                      <div className="flex items-center gap-3">
-                        <RadioGroupItem value="Gray" id="r6" />
-                        <Label htmlFor="r6">Gray</Label>
-                      </div>
-                    </RadioGroup>
-                  </div>
+                  {product?.variant?.length > 0 && (
+                    <>
+                      <label
+                        for="color"
+                        className=" text-[#191C1F] text-sm leading-5 font-medium"
+                      >
+                        Color
+                      </label>
+                      <select
+                        id="color"
+                        className="border border-gray-300 p-1.5 mb-2 text-[#191C1F] text-sm leading-5"
+                      >
+                        {product.variant.map((item, index) => (
+                          <option value={item} key={index}>
+                            {item.color}
+                          </option>
+                        ))}
+                      </select>
+                    </>
+                  )}
                   {/* memory */}
-                  <div>
+                  {/* <div>
                     <Label
                       htmlFor="M"
                       className={`mb-2 text-[#191C1F] text-sm leading-5`}
@@ -243,30 +203,37 @@ const page = () => {
                         </SelectItem>
                       </SelectContent>
                     </Select>
-                  </div>
+                  </div> */}
                 </div>
                 <div className="flex flex-col gap-4">
                   {/* size */}
-                  <div>
-                    <Select>
-                      <Label
-                        htmlFor="M"
-                        className={`mb-2 text-[#191C1F] text-sm leading-5`}
+                  {product?.variant?.length > 0 && (
+                    <>
+                      <label for="size">Size</label>
+                      <select
+                        onChange={(e) => {
+                          const selectedIndex = e.target.selectedIndex;
+                          const selectedVariant =
+                            product.variant[selectedIndex];
+                          handleVariant(selectedVariant);
+                        }}
+                        id="size"
+                        className="border border-gray-300 p-1.5 mb-2 text-[#191C1F] text-sm leading-5"
                       >
-                        Memory
-                      </Label>
-                      <SelectTrigger className="w-[312px] font-semibold">
-                        <SelectValue placeholder="Size" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="light">M</SelectItem>
-                        <SelectItem value="dark">XL</SelectItem>
-                        <SelectItem value="system">XXl</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
+                        {product.variant.map((item, index) => (
+                          <option
+                            onChange={() => setVariant(item)}
+                            value={item}
+                            key={index}
+                          >
+                            {item.size}
+                          </option>
+                        ))}
+                      </select>
+                    </>
+                  )}
                   {/* storage */}
-                  <div>
+                  {/* <div>
                     <Select>
                       <Label
                         htmlFor="M"
@@ -285,44 +252,88 @@ const page = () => {
                         </SelectItem>
                       </SelectContent>
                     </Select>
+                  </div> */}
+                </div>
+              </div>
+
+              {/* add to cart, buy now buttons */}
+              {!variant ? (
+                <div className="flex gap-4">
+                  <div className="flex items-center space-x-4 border-2 border-[#E4E7E9] w-[164px] h-14 rounded-[3px]">
+                    <button
+                      onClick={handleDecrement}
+                      className=" text-[30px] px-4 py-2 rounded"
+                    >
+                      −
+                    </button>
+                    <h1 className="text-[#475156] leading-6 font-poppins w-[30px] flex items-center justify-center">
+                      {" "}
+                      {count}
+                    </h1>
+                    <button
+                      onClick={handleIncrement}
+                      className="  text-[30px]  px-4 py-2 rounded"
+                    >
+                      +
+                    </button>
+                    {/* add to cart */}
+                  </div>
+                  <div className="">
+                    <Link href="/cart">
+                      <button className="w-[310px] h-[56px] bg-[#FA8232] flex items-center justify-center rounded-[3px] uppercase font-bold gap-2  text-white cursor-pointer">
+                        Add to card <PiShoppingCartSimple className="w-6 h-6" />
+                      </button>
+                    </Link>
+                  </div>
+                  <div className="">
+                    <Link href="/cart">
+                      <button className="w-[142px] h-[56px] flex items-center justify-center border-2 border-[#FA8232] rounded-[3px] uppercase font-bold gap-2  text-[#FA8232] cursor-pointer">
+                        Buy now
+                      </button>
+                    </Link>
                   </div>
                 </div>
-              </div>
-              {/* add to cart, buy now buttons */}
-              <div className="flex gap-4">
-                <div className="flex items-center space-x-4 border-2 border-[#E4E7E9] w-[164px] h-14 rounded-[3px]">
-                  <button
-                    onClick={handleDecrement}
-                    className=" text-[30px] px-4 py-2 rounded"
-                  >
-                    −
-                  </button>
-                  <h1 className="text-[#475156] leading-6 font-poppins w-[30px] flex items-center justify-center">
-                    {" "}
-                    {count}
-                  </h1>
-                  <button
-                    onClick={handleIncrement}
-                    className="  text-[30px]  px-4 py-2 rounded"
-                  >
-                    +
-                  </button>
-                </div>
-                <div className="">
-                  <Link href="/cart">
-                    <button className="w-[310px] h-[56px] bg-[#FA8232] flex items-center justify-center rounded-[3px] uppercase font-bold gap-2  text-white cursor-pointer">
-                      Add to card <PiShoppingCartSimple className="w-6 h-6" />
+              ) : variant && variant.stock > 0 ? (
+                <div className="flex gap-4">
+                  <div className="flex items-center space-x-4 border-2 border-[#E4E7E9] w-[164px] h-14 rounded-[3px]">
+                    <button
+                      onClick={handleDecrement}
+                      className=" text-[30px] px-4 py-2 rounded"
+                    >
+                      −
                     </button>
-                  </Link>
-                </div>
-                <div className="">
-                  <Link href="/cart">
-                    <button className="w-[142px] h-[56px] flex items-center justify-center border-2 border-[#FA8232] rounded-[3px] uppercase font-bold gap-2  text-[#FA8232] cursor-pointer">
-                      Buy now
+                    <h1 className="text-[#475156] leading-6 font-poppins w-[30px] flex items-center justify-center">
+                      {" "}
+                      {count}
+                    </h1>
+                    <button
+                      onClick={handleIncrement}
+                      className="  text-[30px]  px-4 py-2 rounded"
+                    >
+                      +
                     </button>
-                  </Link>
+                    {/* add to cart */}
+                  </div>
+                  <div className="">
+                    <Link href="/cart">
+                      <button className="w-[310px] h-[56px] bg-[#FA8232] flex items-center justify-center rounded-[3px] uppercase font-bold gap-2  text-white cursor-pointer">
+                        Add to card <PiShoppingCartSimple className="w-6 h-6" />
+                      </button>
+                    </Link>
+                  </div>
+                  <div className="">
+                    <Link href="/cart">
+                      <button className="w-[142px] h-[56px] flex items-center justify-center border-2 border-[#FA8232] rounded-[3px] uppercase font-bold gap-2  text-[#FA8232] cursor-pointer">
+                        Buy now
+                      </button>
+                    </Link>
+                  </div>
                 </div>
-              </div>
+              ) : (
+                <div className="text-red-500 font-extrabold text-3xl leading-5 font-poppins">
+                  Out Of Stock
+                </div>
+              )}
 
               {/* =============== */}
               <div className="flex justify-between items-center mt-6">

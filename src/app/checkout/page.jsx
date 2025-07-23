@@ -1,9 +1,15 @@
-import React from 'react'
+import Registration from "@/components/allComponents/account/Registration";
+import Container from "@/components/common/Container";
+import React from "react";
 
 const page = () => {
   return (
-    <div>Checkout</div>
-  )
-}
+    <div>
+      <Container>
+        <Registration />
+      </Container>
+    </div>
+  );
+};
 
-export default page
+export default page;
