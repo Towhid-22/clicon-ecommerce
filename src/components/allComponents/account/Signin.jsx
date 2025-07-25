@@ -6,34 +6,45 @@ import { Button } from "@/components/ui/button";
 import { FaArrowRight } from "react-icons/fa6";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
+import { UserInfoSet } from "@/lib/slices/authSlice";
+import Registration from "./Registration";
+import toast, { Toaster } from "react-hot-toast";
 
 const Signin = () => {
-  const [showPassword, setShowPassword] = useState(false);
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [ signup, setSignup] = useState(false); 
+
+  const [showPassword, setShowPassword] = useState(false);
   const togglePassword = () => setShowPassword((prev) => !prev);
 
-  const handleLogin = async (e) => {
+  const handleLogin = (e) => {
     e.preventDefault();
     setLoading(true);
 
     try {
-      const res = axios.post(
-        "http://localhost:4000/api/v1/auth/login",
-        {
-          email,
-          password,
-        },
-        {
-          withCredentials: true,
-        }
-      );
-
-      const userdata = res.data?.data;
+      const res = axios
+        .post(
+          `${process.env.NEXT_PUBLIC_URL}/api/v1/auth/login`,
+          {
+            email,
+            password,
+          },
+          {
+            withCredentials: true,
+          }
+        )
+        .then((res) => {
+          if (res.data.success === true) {
+            toast.success("Registration Successfull!");
+            console.log(res.data.data);
+            dispatch(UserInfoSet(res.data.data));
+          }
+        });
     } catch (err) {
-      console.log(err)
+      toast.error(err.response.data.message || "Something went wrong");
     } finally {
       setLoading(false);
     }
@@ -41,6 +52,7 @@ const Signin = () => {
 
   return (
     <div className="font-poppins absolute top-14.5 right-0 z-50 shadow-2xl">
+      <Toaster position="top-center" reverseOrder={false} />
       <Container>
         <form
           onSubmit={handleLogin}
@@ -117,10 +129,12 @@ const Signin = () => {
               </div>
 
               <Button
+                onClick={() => setSignup(true)}
                 type="button"
                 className="w-full text-sm font-bold bg-white text-[#FA8232] border-2 border-[#FFE7D6] rounded-[2px] uppercase hover:bg-[#FFF4EC] py-6 mt-3"
               >
                 Create account
+                {signup && <Registration className="absolute top-0 right-0" />}
               </Button>
             </div>
           </div>

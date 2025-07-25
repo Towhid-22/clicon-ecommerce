@@ -14,7 +14,7 @@ const Product = ({ product, id, onClick }) => {
     <div
       onClick={onClick}
       key={id}
-      className="border border-[#E4E7E9] p-4 rounded-[3px] hover:shadow-xl "
+      className="border border-[#E4E7E9] p-4 rounded-[3px] hover:shadow-xl z-45"
     >
       <div className="relative group flex flex-col items-center">
         <Image
