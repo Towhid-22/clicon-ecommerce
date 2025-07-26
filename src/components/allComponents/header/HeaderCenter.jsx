@@ -5,39 +5,84 @@ import Image from "next/image";
 import { Input } from "@/components/ui/input";
 import { PiShoppingCartSimpleBold, PiUserBold } from "react-icons/pi";
 import { GrFavorite } from "react-icons/gr";
-import { Search } from "lucide-react";
+import { IoIosSearch } from "react-icons/io";
 import Cart from "../cart/Cart";
 import { useState } from "react";
 import Link from "next/link";
 import SigninPopup from "../account/Signin";
 import { useSelector } from "react-redux";
 import UserPopup from "../account/UserPopup";
+import axios from "axios";
 
 const HeaderCenter = () => {
   const user = useSelector((state) => state.auth.userInfo);
   const [cartList, setCartList] = useState(false);
   const [signin, setSignin] = useState(false);
+  const userRef = useRef(null);
   const cartRef = useRef(null);
   const signinRef = useRef(null);
-  const userRef = useRef(null);
+  const searchRef = useRef(null);
   const [manageUser, setManageUser] = useState(false);
+  const [searchProduct, setSearchProduct] = useState([]);
+  // useEffect(() => {
+  //   const handleClickOutside = (event) => {
+  //     if (cartRef.current && !cartRef.current.contains(event.target)) {
+  //       setCartList(false);
+  //     }
+  //     if (signinRef.current && !signinRef.current.contains(event.target)) {
+  //       setSignin(false);
+  //     }
+  //     if (userRef.current && !userRef.current.contains(event.target)) {
+  //       setManageUser(false);
+  //     }
+  //     if (searchRef.current && !searchRef.current.contains(event.target)) {
+  //       setSearchProduct(false);
+  //     }
+  //   };
+  //   document.addEventListener("click", handleClickOutside);
+  //   return () => {
+  //     document.removeEventListener("click", handleClickOutside);
+  //   };
+  // }, []);
+
   useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (cartRef.current && !cartRef.current.contains(event.target)) {
-        setCartList(false);
-      }
-      if (signinRef.current && !signinRef.current.contains(event.target)) {
-        setSignin(false);
-      }
-      if (userRef.current && !userRef.current.contains(event.target)) {
-        setManageUser(false);
-      }
-    };
-    document.addEventListener("click", handleClickOutside);
-    return () => {
-      document.removeEventListener("click", handleClickOutside);
-    };
-  }, []);
+  const handleClickOutside = (event) => {
+    const clickedNode = event.target;
+    const isInsideCart = cartRef.current?.contains(clickedNode);
+    const isInsideSignin = signinRef.current?.contains(clickedNode);
+    const isInsideUser = userRef.current?.contains(clickedNode);
+    const isInsideSearch = searchRef.current?.contains(clickedNode);
+
+    if (!isInsideCart && !isInsideSignin && !isInsideUser && !isInsideSearch) {
+      setCartList(false);
+      setSignin(false);
+      setManageUser(false);
+      setSearchProduct(false);
+    }
+  };
+
+  document.addEventListener("click", handleClickOutside);
+  return () => {
+    document.removeEventListener("click", handleClickOutside);
+  };
+}, []);
+
+  const handleSearchProducts = (e) => {
+    e.preventDefault();
+    // if(e.target.value === '') return
+    let search = e.target.value;
+    axios
+      .get(
+        `${process.env.NEXT_PUBLIC_URL}/api/v1/product/search-product?search=${search}`
+      )
+      .then((res) => {
+        setSearchProduct(res.data.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   return (
     <div className="bg-[#1B6392] py-5">
       <Container>
@@ -53,10 +98,21 @@ const HeaderCenter = () => {
           </Link>
           <div className="w-[654px] relative">
             <Input
+              onChange={handleSearchProducts}
               placeholder="Search for anything..."
               className=" py-[14px] rounded-none bg-white placeholder:text-sm leading-5 font-poppins outline-none"
             />
-            <Search className="absolute right-5 text-xl top-1/2 translate-y-[-50%] text-[#191C1F]" />
+            <IoIosSearch className="absolute right-5 text-xl top-1/2 translate-y-[-50%]  text-[#191C1F]" />
+            {searchProduct.length > 0 && (
+              <div ref={searchRef} className="absolute  top-[110%] p-3 w-full left-0 rounded-none bg-white shadow-[0px_2px_5px_0.01px_rgba(0,0,0,0.2)]">
+                {searchProduct.map((item) => (
+                  <div className="flex items-center gap-3 border-b-[1px] border-[#929FA5] py-2 cursor-pointer">
+                    <img className="w-15 h-15" src={item.thumbnail}  alt={item.title} />
+                    <p>{item.title}</p>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
           <ul className="flex gap-6 items-center">
             <li

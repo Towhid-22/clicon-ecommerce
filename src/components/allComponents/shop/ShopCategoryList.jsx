@@ -1,11 +1,8 @@
 "use client";
 import React, { useState, useEffect, use } from "react";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { Label } from "@/components/ui/label";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { shopCategory } from "@/lib/slices/productSlice";
-import Breadcrumb from "@/components/common/Breadcrumb";
 
 const CategoryList = () => {
   // const categories = [
