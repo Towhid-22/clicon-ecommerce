@@ -9,18 +9,18 @@ import FeaturesProducts from "@/components/allComponents/products/FeaturesProduc
 import NewProduct from "@/components/allComponents/new-product/NewProduct";
 import Overview from "@/components/allComponents/overview/Overview";
 import Subscribe from "@/components/allComponents/subscribe/Subscribe";
-import SigninPopup from "@/components/allComponents/account/Signin";
+import UserPopup from "@/components/allComponents/account/UserPopup";
 
 const page = () => {
   return (
     <>
+      {/* <UserPopup /> */}
       <Banner />
       <Service />
       <Category />
       <FeaturesProducts />
       <NewProduct />
       <Overview />
-      {/* <SigninPopup /> */}
       <Subscribe />
     </>
   );

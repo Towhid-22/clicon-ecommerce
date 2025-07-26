@@ -1,157 +1,113 @@
 "use client";
+import Breadcrumb from "@/components/common/Breadcrumb";
 import Container from "@/components/common/Container";
-import Image from "next/image";
-import React from "react";
-import { IoIosCloseCircleOutline } from "react-icons/io";
-import { useState } from "react";
-import { LuArrowLeft } from "react-icons/lu";
-import Link from "next/link";
+import React, { useState } from "react";
+import { SlClose } from "react-icons/sl";
+import { HiArrowLongLeft } from "react-icons/hi2";
 
 const page = () => {
   const [count, setCount] = useState(0);
-
   const handleIncrement = () => setCount((prev) => prev + 1);
   const handleDecrement = () => setCount((prev) => prev - 1);
   return (
-    <div className="font-poppins">
+    <div>
+      <Breadcrumb />
       <Container>
-        <div className="w-[872px]">
-          <h3 className="text-[#191C1F] font-medium text-[18px] leading-6 mb-5">
-            Shopping Card
-          </h3>
-        </div>
-        <div className="w-[872px]">
-          <div className="w-[872px] border">
-            <table className="border-[#E4E7E9] border">
-              <tr className="bg-[#F2F4F5] ">
-                <th className="py-2.5 px-6 w-[375px]">
-                  <h3 className="font-medium text-left text-[12px leading-[150%] text-[#475156] uppercase w-[375px]">
-                    Products
-                  </h3>
-                </th>
-                <th className="w-[200px]">
-                  <h3 className="font-medium text-[12px leading-[150%] text-[#475156] uppercase w-[88px]">
-                    Price
-                  </h3>
-                </th>
-                <th>
-                  <h3 className="w-[200px] font-medium text-[12px leading-[150%] text-[#475156] uppercase">
-                    Quantity
-                  </h3>
-                </th>
-                <th>
-                  <h3 className="w-[200px] font-medium text-[12px leading-[150%] text-[#475156] uppercase">
-                    Sub-total
-                  </h3>
-                </th>
-              </tr>
-              <tr className=" ">
-                <td className="w-[375px] px-6 ">
-                  <div className="flex items-center gap-4 w-[375px]">
-                    <IoIosCloseCircleOutline className="w-6 h-6 hover:text-[#EE5858]" />
-                    <Image
-                      src="/Cart_images/cart1.png"
-                      width={80}
-                      height={80}
-                    />
-                    <p className="text-sm leading-5 text-[#191C1F]">
-                      4K UHD LED Smart TV with <br /> Chromecast Built-in
-                    </p>
-                  </div>
-                </td>
-                <td className="w-[200px]  text-center">
-                  <div className="w-[88px]">
-                    <h4 className="text-sm leading-5 text-[#475156]">
-                      <del className="text-[#929FA5]">$99</del> $70
-                    </h4>
-                  </div>
-                </td>
-                <td className=" flex items-center justify-center pt-3">
-                  <div className="flex items-center space-x-4 border-2 border-[#E4E7E9] w-[148px] h-14 rounded-[3px]">
-                    <button
-                      onClick={handleDecrement}
-                      className=" text-[30px] px-4 py-2 rounded"
-                    >
-                      −
-                    </button>
-                    <h1 className="text-[#475156] leading-6 font-poppins w-[30px] flex items-center justify-center">
-                      {" "}
-                      {count}
-                    </h1>
-                    <button
-                      onClick={handleIncrement}
-                      className="  text-[30px]  px-4 py-2 rounded"
-                    >
-                      +
-                    </button>
-                  </div>
-                </td>
-                <td className=" text-center">
-                  <h3 className="text-[#191C1F] font-medium text-sm leading-5 pr-3">
-                    $70
-                  </h3>
-                </td>
-              </tr>
-              <tr className=" ">
-                <td className="w-[375px] px-6 ">
-                  <div className="flex items-center gap-4 w-[375px]">
-                    <IoIosCloseCircleOutline className="w-6 h-6 hover:text-[#EE5858]" />
-                    <Image
-                      src="/Cart_images/cart1.png"
-                      width={80}
-                      height={80}
-                    />
-                    <p className="text-sm leading-5 text-[#191C1F]">
-                      4K UHD LED Smart TV with <br /> Chromecast Built-in
-                    </p>
-                  </div>
-                </td>
-                <td className="w-[200px]  text-center">
-                  <div className="w-[88px]">
-                    <h4 className="text-sm leading-5 text-[#475156]">
-                      <del className="text-[#929FA5]">$99</del> $70
-                    </h4>
-                  </div>
-                </td>
-                <td className=" flex items-center justify-center pt-3">
-                  <div className="flex items-center space-x-4 border-2 border-[#E4E7E9] w-[148px] h-14 rounded-[3px]">
-                    <button
-                      onClick={handleDecrement}
-                      className=" text-[30px] px-4 py-2 rounded"
-                    >
-                      −
-                    </button>
-                    <h1 className="text-[#475156] leading-6 font-poppins w-[30px] flex items-center justify-center">
-                      {" "}
-                      {count}
-                    </h1>
-                    <button
-                      onClick={handleIncrement}
-                      className="  text-[30px]  px-4 py-2 rounded"
-                    >
-                      +
-                    </button>
-                  </div>
-                </td>
-                <td className=" text-center">
-                  <h3 className="text-[#191C1F] font-medium text-sm leading-5 pr-3">
-                    $70
-                  </h3>
-                </td>
-              </tr>
-            </table>
+        <div className="container mt-20 mb-[120px]">
+          <div className="mt-20">
+            <div className="font-Poppins text-base leading-6 text-black flex gap-6 py-6 px-10 shadow-[0px_2px_5px_0.01px_rgba(0,0,0,0.2)] rounded-[4px]">
+              <h2 className="w-[500px]">Product</h2>
+              <h2 className="w-[320px]">Price</h2>
+              <h2 className="w-[320px]">Qantity</h2>
+              <h2 className="w-[320px]">Subtotal</h2>
+            </div>
+            {/* shadow-[0px_2px_5px_0.01px_rgba(0,0,0,0.2)] */}
+            {/* <div className="font-Poppins leading-6 text-black py-6 px-10 flex items-center gap-6 shadow-[0px_2px_5px_0.01px_rgba(0,0,0,0.2)] rounded-[4px] mt-10 ">
+              <div className="flex items-center jusbtify-center gap-5 w-[500px]">
+                <SlClose className="w-6 h-6 text-[#929FA5] hover:text-[#EE5858] cursor-pointer" />
+                <img src="/cart1.png" alt="" />
+                <p className="">LCD Monitor</p>
+              </div>
+              <h2 className="w-[320px]">$650</h2>
+              <input
+                type="number"
+                placeholder="01"
+                className="w-[320px] px-3 border-[2px] border-black/[40%] rounded-[4px]"
+              />
+              <h2 className="w-[320px]">$650</h2>
+            </div> */}
+            <div className="font-Poppins leading-6 text-black py-6 px-10 flex items-center gap-6 shadow-[0px_2px_5px_0.01px_rgba(0,0,0,0.2)] rounded-[4px] mt-10 ">
+              <div className="flex items-center jusbtify-center gap-5 w-[500px]">
+                <SlClose className="w-6 h-6 text-[#929FA5] hover:text-[#EE5858] cursor-pointer" />
+                <img src="/cart2.png" alt="Monitor" />
+                <p>H1 Gamepad</p>
+              </div>
+              <h2 className="w-[320px]">$550</h2>
+              <div className="flex items-center space-x-4 border-2 border-[#E4E7E9] w-[164px] h-14 rounded-[3px]">
+                <button
+                  onClick={handleDecrement}
+                  className=" text-[30px] px-4 py-2 rounded"
+                >
+                  −
+                </button>
+                <h1 className="text-[#475156] leading-6 font-poppins w-[30px] flex items-center justify-center">
+                  {" "}
+                  {count}
+                </h1>
+                <button
+                  onClick={handleIncrement}
+                  className="  text-[30px]  px-4 py-2 rounded"
+                >
+                  +
+                </button>
+                {/* add to cart */}
+              </div>
+              <h2 className="w-[320px]">$1100</h2>
+            </div>
           </div>
-          <div className="flex justify-between items-center">
-            <Link href="/shop">
-              <button className="font-bold text-sm leading-12 tracking-[1.2%] text-[#2DA5F3] border-[2px] border-[#2DA5F3] uppercase px-6 flex items-center gap-2 cursor-pointer rounded-[3px]">
-                <LuArrowLeft className="text-xl" /> Return to Shop
-              </button>
-            </Link>
-            <Link href="#">
-              <button className="font-bold text-sm leading-12 tracking-[1.2%] text-[#2DA5F3] border-[2px] border-[#2DA5F3] uppercase px-6 flex items-center gap-2 cursor-pointer rounded-[3px]">
-                Update cart
-              </button>
-            </Link>
+          <div className="mt-6 font-Poppins leading-6 flex justify-between">
+            <button className="font-medium py-4 px-12 border-[2px] border-[#2DA5F3] flex items-center gap-2 text-[#2DA5F3] rounded-[4px] uppercase">
+              <HiArrowLongLeft className="w-6 h-6" /> Return To Shop
+            </button>
+            <button className="font-medium py-4 px-12 border-[2px] border-[#2DA5F3] text-[#2DA5F3] rounded-[4px] uppercase">
+              Update Cart
+            </button>
+          </div>
+          <div className="mt-20 flex justify-between">
+            <div>
+              <div className="flex gap-4">
+                <input
+                  type="text"
+                  placeholder="Coupon Code"
+                  className="w-[300px] py-4 border-[2px] border-black/[50%] rounded-[4px] px-6 text-base font-Poppins leading-6"
+                />
+                <button className="font-medium text-white py-4 px-12 rounded-[4px] bg-[#DB4444] ">
+                  Apply Coupon
+                </button>
+              </div>
+            </div>
+            <div className="w-[470px] border-[2px] border-black/[50%] pb-12 pt-8 px-6 rounded-[4px]">
+              <h2 className="font-Poppins font-semibold text-xl leading-7 mb-6">
+                Cart Total
+              </h2>
+              <div className="font-Poppins font-normal text-base leading-6 flex justify-between border-b-[1px] border-black/[50%] pb-4 mb-4">
+                <h2>Subtotal:</h2>
+                <h2>$1750</h2>
+              </div>
+              <div className="font-Poppins font-normal text-base leading-6 flex justify-between border-b-[1px] border-black/[50%] pb-4 mb-4">
+                <h2>Shipping:</h2>
+                <h2>Free</h2>
+              </div>
+              <div className="font-Poppins font-normal text-base leading-6 flex justify-between pb-4 mb-4">
+                <h2>Total:</h2>
+                <h2>$1750</h2>
+              </div>
+              <div className="text-center">
+                <button className="font-medium text-white py-4 px-12 rounded-[4px] bg-[#DB4444] ">
+                  Procees to checkout
+                </button>
+              </div>
+            </div>
           </div>
         </div>
       </Container>

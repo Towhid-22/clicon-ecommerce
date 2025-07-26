@@ -10,12 +10,17 @@ import Cart from "../cart/Cart";
 import { useState } from "react";
 import Link from "next/link";
 import SigninPopup from "../account/Signin";
+import { useSelector } from "react-redux";
+import UserPopup from "../account/UserPopup";
 
 const HeaderCenter = () => {
+  const user = useSelector((state) => state.auth.userInfo);
   const [cartList, setCartList] = useState(false);
   const [signin, setSignin] = useState(false);
   const cartRef = useRef(null);
   const signinRef = useRef(null);
+  const userRef = useRef(null);
+  const [manageUser, setManageUser] = useState(false);
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (cartRef.current && !cartRef.current.contains(event.target)) {
@@ -23,6 +28,9 @@ const HeaderCenter = () => {
       }
       if (signinRef.current && !signinRef.current.contains(event.target)) {
         setSignin(false);
+      }
+      if (userRef.current && !userRef.current.contains(event.target)) {
+        setManageUser(false);
       }
     };
     document.addEventListener("click", handleClickOutside);
@@ -63,14 +71,24 @@ const HeaderCenter = () => {
             <li className="bg-transparent cursor-pointer hover:bg-transparent">
               <GrFavorite className="text-white w-[32px] h-[32px]" />
             </li>
-            <li
-              ref={signinRef}
-              onClick={() => setSignin(true)}
-              className="bg-transparent relative cursor-pointer hover:bg-transparent"
-            >
-              <PiUserBold className="text-white w-[32px] h-[32px]" />
-              {signin && <SigninPopup className="absolute top-0 right-0" />}
-            </li>
+            {user ? (
+              <h3
+                onClick={() => setManageUser(true)}
+                ref={userRef}
+                className="text-white bg-[#FA8232] cursor-pointer w-[32px] h-[32px] flex items-center justify-center rounded-full font-extrabold relative"
+              >
+                {user.username.charAt(0)} {manageUser && <UserPopup />}{" "}
+              </h3>
+            ) : (
+              <li
+                ref={signinRef}
+                onClick={() => setSignin(true)}
+                className="bg-transparent relative cursor-pointer hover:bg-transparent"
+              >
+                <PiUserBold className="text-white w-[32px] h-[32px]" />
+                {signin && <SigninPopup className="absolute top-0 right-0" />}
+              </li>
+            )}
           </ul>
         </div>
       </Container>

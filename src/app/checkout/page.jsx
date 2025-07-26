@@ -1,4 +1,4 @@
-import Registration from "@/components/allComponents/account/Registration";
+import CartPage from "@/components/allComponents/cart/CartPage";
 import Container from "@/components/common/Container";
 import React from "react";
 
@@ -6,7 +6,7 @@ const page = () => {
   return (
     <div>
       <Container>
-        <Registration />
+        <CartPage />
       </Container>
     </div>
   );

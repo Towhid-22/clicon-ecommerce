@@ -15,7 +15,7 @@ const Signin = () => {
   const [loading, setLoading] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [ signup, setSignup] = useState(false); 
+  const [signup, setSignup] = useState(false);
 
   const [showPassword, setShowPassword] = useState(false);
   const togglePassword = () => setShowPassword((prev) => !prev);
@@ -38,15 +38,14 @@ const Signin = () => {
         )
         .then((res) => {
           if (res.data.success === true) {
-            toast.success("Registration Successfull!");
-            console.log(res.data.data);
             dispatch(UserInfoSet(res.data.data));
+            toast.success("Login Successfull!");
           }
         });
-    } catch (err) {
-      toast.error(err.response.data.message || "Something went wrong");
-    } finally {
-      setLoading(false);
+      } catch (err) {
+        toast.error(err.response.data.message || "Something went wrong");
+      } finally {
+        setLoading(false);
     }
   };
 

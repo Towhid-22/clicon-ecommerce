@@ -4,6 +4,7 @@ import "./globals.css";
 import Header from "@/components/allComponents/header/Header";
 import Footer from "@/components/allComponents/footer/Footer";
 import StoreProvider from "@/lib/StoreProvider";
+import AuthCheck from "@/components/common/AuthCheck";
 
 const poppins = Poppins({
   variable: "--font-poppins",
@@ -22,8 +23,10 @@ export default function RootLayout({ children }) {
       <body className={`${poppins.variable} antialiased font-poppins`}>
         <Advertisement />
         <StoreProvider>
-          <Header />
-          {children}
+          <AuthCheck>
+            <Header />
+            {children}
+          </AuthCheck>
           <Footer />
         </StoreProvider>
       </body>
