@@ -104,12 +104,12 @@ const HeaderCenter = () => {
             />
             <IoIosSearch className="absolute right-5 text-xl top-1/2 translate-y-[-50%]  text-[#191C1F]" />
             {searchProduct.length > 0 && (
-              <div ref={searchRef} className="absolute  top-[110%] p-3 w-full left-0 rounded-none bg-white shadow-[0px_2px_5px_0.01px_rgba(0,0,0,0.2)]">
+              <div ref={searchRef} className="absolute z-50  top-[110%] p-3 w-full left-0 rounded-none bg-white shadow-[0px_2px_5px_0.01px_rgba(0,0,0,0.2)]">
                 {searchProduct.map((item) => (
-                  <div className="flex items-center gap-3 border-b-[1px] border-[#929FA5] py-2 cursor-pointer">
+                  <Link key={item._id} href={`/shop/${item.slug}`} className="flex items-center gap-3 border-b-[1px] border-[#929FA5] py-2 cursor-pointer">
                     <img className="w-15 h-15" src={item.thumbnail}  alt={item.title} />
                     <p>{item.title}</p>
-                  </div>
+                  </Link>
                 ))}
               </div>
             )}
@@ -133,7 +133,7 @@ const HeaderCenter = () => {
                 ref={userRef}
                 className="text-white bg-[#FA8232] cursor-pointer w-[32px] h-[32px] flex items-center justify-center rounded-full font-extrabold relative"
               >
-                {user.username.charAt(0)} {manageUser && <UserPopup />}{" "}
+                {user?.username?.charAt(0)} {manageUser && <UserPopup />}{" "}
               </h3>
             ) : (
               <li

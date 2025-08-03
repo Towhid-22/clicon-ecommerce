@@ -1,6 +1,6 @@
 "use client";
 import Container from "@/components/common/Container";
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import { FaUserEdit } from "react-icons/fa";
 import { AiTwotoneShop } from "react-icons/ai";
 import { RiPokerHeartsLine } from "react-icons/ri";
@@ -16,6 +16,7 @@ import Cookies from "js-cookie";
 const UserPopup = () => {
   const dispatch = useDispatch();
   const userRef = useRef(null);
+  const [cartList, setCartList] = useState(false);
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (userRef.current && !userRef.current.contains(event.target)) {

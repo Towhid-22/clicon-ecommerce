@@ -4,30 +4,23 @@ import axios from "axios";
 import { useParams } from "next/navigation";
 import Breadcrumb from "@/components/common/Breadcrumb";
 import Container from "@/components/common/Container";
-import Link from "next/link";
 import Image from "next/image";
 import { FaFacebook, FaPinterest, FaStar, FaTwitter } from "react-icons/fa6";
 import Flex from "@/components/common/Flex";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { Label } from "@/components/ui/label";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { PiShoppingCartSimple } from "react-icons/pi";
 import { BsCopy, BsHeart } from "react-icons/bs";
 import { FiRefreshCcw } from "react-icons/fi";
+import { useSelector } from "react-redux";
+import toast, { Toaster } from "react-hot-toast";
 
 const page = () => {
   const { id } = useParams();
 
   const [product, setProduct] = useState({});
   const [variant, setVariant] = useState();
+  const user = useSelector((state) => state.auth.userInfo);
 
-  const [count, setCount] = useState(0);
+  const [count, setCount] = useState(1);
   const handleIncrement = () => setCount((prev) => prev + 1);
   const handleDecrement = () => setCount((prev) => prev - 1);
 
@@ -42,6 +35,10 @@ const page = () => {
           if (res.data.data.variant.length > 0) {
             setVariant(res.data.data.variant[0]);
           }
+          // console.log(res.data.data);
+        })
+        .catch((err) => {
+          console.log(err);
         });
     }
     getSingleProduct();
@@ -50,10 +47,27 @@ const page = () => {
   let handleVariant = (item) => {
     setVariant(item);
   };
-  console.log(variant);
+
+  const handleAddToCart = () => {
+    axios
+      .post(`${process.env.NEXT_PUBLIC_URL}/api/v1/cart/add-to-cart`, {
+        product: product._id,
+        quantity: count,
+        variant: variant ? variant._id : null,
+        price: product.price,
+        user: user._id,
+      })
+      .then((res) => {
+     toast.success("Add to cart Successfull!");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   return (
     <div>
+        <Toaster position="top-center" reverseOrder={false} />
       <Breadcrumb />
       <div className="mt-8">
         <Container>
@@ -147,12 +161,6 @@ const page = () => {
                 <h3 className="text-2xl leading-8 font-semibold text-[#2DA5F3]">
                   ${product?.price}
                 </h3>
-                {/* <span className="text-[#77878F] leading-6">
-                  <del>$1999.00</del>
-                </span>
-                <button className="font-semibold text-sm leading-5 text-[#191C1F] bg-[#EFD33D] px-2.5 py-1.5 rounded-[3px]">
-                  21% OFF
-                </button> */}
               </div>
 
               {/* =============== */}
@@ -179,31 +187,6 @@ const page = () => {
                       </select>
                     </>
                   )}
-                  {/* memory */}
-                  {/* <div>
-                    <Label
-                      htmlFor="M"
-                      className={`mb-2 text-[#191C1F] text-sm leading-5`}
-                    >
-                      Memory
-                    </Label>
-                    <Select className="mt-2">
-                      <SelectTrigger className="w-[312px] font-semibold">
-                        <SelectValue placeholder="Memory" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="light">
-                          16GB unified memory
-                        </SelectItem>
-                        <SelectItem value="dark">
-                          32GB unified memory
-                        </SelectItem>
-                        <SelectItem value="system">
-                          64GB unified memory
-                        </SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div> */}
                 </div>
                 <div className="flex flex-col gap-4">
                   {/* size */}
@@ -232,27 +215,6 @@ const page = () => {
                       </select>
                     </>
                   )}
-                  {/* storage */}
-                  {/* <div>
-                    <Select>
-                      <Label
-                        htmlFor="M"
-                        className={`mb-2 text-[#191C1F] text-sm leading-5`}
-                      >
-                        Memory
-                      </Label>
-                      <SelectTrigger className="w-[312px] font-semibold">
-                        <SelectValue placeholder="Storage" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="light">1Tb SSD Storage</SelectItem>
-                        <SelectItem value="dark">512 GB SSD Storage</SelectItem>
-                        <SelectItem value="system">
-                          256 GB SSD Storage
-                        </SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div> */}
                 </div>
               </div>
 
@@ -279,18 +241,17 @@ const page = () => {
                     {/* add to cart */}
                   </div>
                   <div className="">
-                    <Link href="/cart">
-                      <button className="w-[310px] h-[56px] bg-[#FA8232] flex items-center justify-center rounded-[3px] uppercase font-bold gap-2  text-white cursor-pointer">
-                        Add to card <PiShoppingCartSimple className="w-6 h-6" />
-                      </button>
-                    </Link>
+                    <button
+                      onClick={handleAddToCart}
+                      className="w-[310px] h-[56px] bg-[#FA8232] flex items-center justify-center rounded-[3px] uppercase font-bold gap-2  text-white cursor-pointer"
+                    >
+                      Add to card <PiShoppingCartSimple className="w-6 h-6" />
+                    </button>
                   </div>
                   <div className="">
-                    <Link href="/cart">
-                      <button className="w-[142px] h-[56px] flex items-center justify-center border-2 border-[#FA8232] rounded-[3px] uppercase font-bold gap-2  text-[#FA8232] cursor-pointer">
-                        Buy now
-                      </button>
-                    </Link>
+                    <button className="w-[142px] h-[56px] flex items-center justify-center border-2 border-[#FA8232] rounded-[3px] uppercase font-bold gap-2  text-[#FA8232] cursor-pointer">
+                      Buy now
+                    </button>
                   </div>
                 </div>
               ) : variant && variant.stock > 0 ? (
@@ -315,18 +276,17 @@ const page = () => {
                     {/* add to cart */}
                   </div>
                   <div className="">
-                    <Link href="/cart">
-                      <button className="w-[310px] h-[56px] bg-[#FA8232] flex items-center justify-center rounded-[3px] uppercase font-bold gap-2  text-white cursor-pointer">
-                        Add to card <PiShoppingCartSimple className="w-6 h-6" />
-                      </button>
-                    </Link>
+                    <button
+                      onClick={handleAddToCart}
+                      className="w-[310px] h-[56px] bg-[#FA8232] flex items-center justify-center rounded-[3px] uppercase font-bold gap-2  text-white cursor-pointer"
+                    >
+                      Add to card <PiShoppingCartSimple className="w-6 h-6" />
+                    </button>
                   </div>
                   <div className="">
-                    <Link href="/cart">
-                      <button className="w-[142px] h-[56px] flex items-center justify-center border-2 border-[#FA8232] rounded-[3px] uppercase font-bold gap-2  text-[#FA8232] cursor-pointer">
-                        Buy now
-                      </button>
-                    </Link>
+                    <button className="w-[142px] h-[56px] flex items-center justify-center border-2 border-[#FA8232] rounded-[3px] uppercase font-bold gap-2  text-[#FA8232] cursor-pointer">
+                      Buy now
+                    </button>
                   </div>
                 </div>
               ) : (

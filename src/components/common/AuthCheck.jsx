@@ -10,8 +10,7 @@ const AuthCheck = ({ children }) => {
       .get(`${process.env.NEXT_PUBLIC_URL}/api/v1/auth/authuser`, { withCredentials: true })
       .then((res) => {
         dispatch(UserInfoSet(res.data.data));
-        console.log(res);
-      })
+      }) 
       .catch((err) => {
         dispatch(UserInfoSet(null));
       });

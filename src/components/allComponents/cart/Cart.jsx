@@ -5,6 +5,7 @@ import Image from "next/image";
 import { IoClose } from "react-icons/io5";
 import { Button } from "@/components/ui/button";
 import { FaArrowRight } from "react-icons/fa6";
+import Link from "next/link";
 
 const Cart = () => {
   return (
@@ -56,11 +57,13 @@ const Cart = () => {
             >
               Checkout now <FaArrowRight className="font-bold w-6 h-6" />
             </Button>
-            <Button
-              className={`w-full font-poppins text-sm leading-12 tracking-[1.2%] font-bold bg-white text-[#FA8232] rounded-[2px] uppercase hover:bg-white z-50 border-2 border-[#FFE7D6] py-6 mt-3 cursor-pointer`}
-            >
-              View Cart
-            </Button>
+            <Link href="/shopping-card" className="">
+              <Button
+                className={`w-full font-poppins text-sm leading-12 tracking-[1.2%] font-bold text-black bg-white rounded-[2px] uppercase hover:bg-[#FA8232] hover:text-white border-2 border-[#FA8232] z-50 py-6 cursor-pointer mt-4`}
+              >
+                View Cart
+              </Button>
+            </Link>
           </div>
         </div>
       </Container>
