@@ -1,4 +1,4 @@
-import { Poppins } from "next/font/google";
+import { Poppins, Public_Sans } from "next/font/google";
 import Advertisement from "@/components/allComponents/advertisement/Advertisement";
 import "./globals.css";
 import Header from "@/components/allComponents/header/Header";
@@ -11,6 +11,11 @@ const poppins = Poppins({
   subsets: ["latin"],
   weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
 });
+const publicSans = Public_Sans({
+  variable: "--font-public-sans",
+  subsets: ["latin"],
+  weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
+});
 
 export const metadata = {
   title: "Clicon",
@@ -20,7 +25,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className={`${poppins.variable} antialiased font-poppins`}>
+      <body className={`${poppins.variable} ${publicSans.variable} antialiased font-poppins`}>
         <Advertisement />
         <StoreProvider>
           <AuthCheck>

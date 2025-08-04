@@ -5,93 +5,56 @@ import { SlClose } from "react-icons/sl";
 import Container from "@/components/common/Container";
 import { useSelector } from "react-redux";
 import axios from "axios";
+import Link from "next/link";
 
 const page = () => {
   const user = useSelector((state) => state.auth.userInfo);
   const [cartList, setCartList] = useState([]);
 
-  // ====================================================
-  // const [quantity, setQuantity] = useState(1);
+  const handleIncrement = (id, currentQty, stock) => {
+    if (currentQty >= stock) return;
+    const newQty = currentQty + 1;
 
-  // const handleIncrement = (id, quantity) => {
-  //   setQuantity((prev) => prev + 1);
-    // const updateQuantity = quantity + 1;
-  //   axios
-  //     .patch(
-  //       `${process.env.NEXT_PUBLIC_URL}/api/v1/cart/update-quantity/${id}`,
-  //       { quantity },
-  //       { withCredentials: true }
-  //     )
-  //     .then((res) => { 
-  //       // window.location.reload();
-  //       console.log(res)
-  //     })
-  //     .catch((err) => {
-  //       console.log(err);
-  //     });
-  // };
+    console.log(stock);
+    axios
+      .patch(
+        `${process.env.NEXT_PUBLIC_URL}/api/v1/cart/update-quantity/${id}`,
+        { quantity: newQty },
+        { withCredentials: true }
+      )
+      .then((res) => {
+        setCartList((prev) =>
+          prev.map((item) =>
+            item._id === id ? { ...item, quantity: newQty } : item
+          )
+        );
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
-// ====================================================
-const handleIncrement = (id, currentQty) => {
-  const newQty = currentQty + 1;
-  axios
-    .patch(
-      `${process.env.NEXT_PUBLIC_URL}/api/v1/cart/update-quantity/${id}`,
-      { quantity: newQty },
-      { withCredentials: true }
-    )
-    .then((res) => {
-      // update UI locally
-      setCartList((prev) =>
-        prev.map((item) =>
-          item._id === id ? { ...item, quantity: newQty } : item
-        )
-      );
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-};
-// ====================================================
+  const handleDecrement = (id, currentQty) => {
+    if (currentQty <= 1) return;
+    const newQty = currentQty - 1;
+    axios
+      .patch(
+        `${process.env.NEXT_PUBLIC_URL}/api/v1/cart/update-quantity/${id}`,
+        { quantity: newQty },
+        { withCredentials: true }
+      )
+      .then((res) => {
+        setCartList((prev) =>
+          prev.map((item) =>
+            item._id === id ? { ...item, quantity: newQty } : item
+          )
+        );
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
-  // const handleDecrement = (id) => {
-  //   setQuantity((prev) => prev - 1);
-  //   axios
-  //     .patch(
-  //       `${process.env.NEXT_PUBLIC_URL}/api/v1/cart/update-quantity/${id}`,
-  //       { quantity },
-  //       { withCredentials: true }
-  //     )
-  //     .then((res) => {
-  //       // window.location.reload();
-  //       console.log(res)
-  //     })
-  //     .catch((err) => {
-  //       console.log(err);
-  //     });
-  // };
-// ==========================================================
-const handleDecrement = (id, currentQty) => {
-  if (currentQty <= 1) return; // optional: prevent going below 1
-  const newQty = currentQty - 1;
-  axios
-    .patch(
-      `${process.env.NEXT_PUBLIC_URL}/api/v1/cart/update-quantity/${id}`,
-      { quantity: newQty },
-      { withCredentials: true }
-    )
-    .then((res) => {
-      setCartList((prev) =>
-        prev.map((item) =>
-          item._id === id ? { ...item, quantity: newQty } : item
-        )
-      );
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-};
-// ==========================================================
   useEffect(() => {
     axios
       .get(
@@ -149,7 +112,7 @@ const handleDecrement = (id, currentQty) => {
                     </tr>
                   ) : (
                     cartList?.map((item) => (
-                      <tr className="align-middle">
+                      <tr key={item._id} className="align-middle">
                         {console.log(item)}
                         <td className="p-4 flex items-center gap-4">
                           <SlClose
@@ -184,18 +147,25 @@ const handleDecrement = (id, currentQty) => {
                         <td className="p-4">
                           <div className="flex items-center space-x-4 border-2 border-[#E4E7E9] w-[164px] h-14 rounded-[3px]">
                             <button
-                              // onClick={() => handleDecrement(item?._id)}
-                               onClick={() => handleDecrement(item._id, item.quantity)}
+                              onClick={() =>
+                                handleDecrement(item._id, item.quantity)
+                              }
                               className=" text-[30px] px-4 py-2 rounded"
                             >
                               −
                             </button>
+                            {/* {console.log(item.product.stock)} */}
                             <h1 className="text-[#475156] leading-6 font-poppins w-[30px] flex items-center justify-center">
                               {item.quantity}
                             </h1>
                             <button
-                              // onClick={() => handleIncrement(item?._id)}
-                               onClick={() => handleIncrement(item._id, item.quantity)}
+                              onClick={() =>
+                                handleIncrement(
+                                  item._id,
+                                  item.quantity,
+                                  item.product.stock
+                                )
+                              }
                               className="  text-[30px]  px-4 py-2 rounded"
                             >
                               +
@@ -245,12 +215,12 @@ const handleDecrement = (id, currentQty) => {
                   <span>Total</span>
                   <span>$357.99 USD</span>
                 </div>
-                <button
-                  className="w-full bg-[#FA8232] text-white py-3 rounded uppercase font-semibold
-              "
-                >
-                  PROCEED TO CHECKOUT →
-                </button>
+
+                <Link href="/checkout">
+                  <button className="w-full bg-[#FA8232] text-white py-3 rounded uppercase font-semibold cursor-pointer">
+                    PROCEED TO CHECKOUT →
+                  </button>
+                </Link>
                 <div className="border-t pt-4">
                   <input
                     type="text"

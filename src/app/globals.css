@@ -5,6 +5,7 @@
 
 @theme{
   --font-poppins: "var(--font-poppins)";
+  --font-public-sans: "var(--font-public-sans)";
 }
 
 @theme inline {
