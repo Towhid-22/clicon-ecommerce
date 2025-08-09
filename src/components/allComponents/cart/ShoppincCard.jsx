@@ -7,7 +7,7 @@ import { useSelector } from "react-redux";
 import axios from "axios";
 import Link from "next/link";
 
-const page = () => {
+const ShoppingCard = () => {
   const user = useSelector((state) => state.auth.userInfo);
   const [cartList, setCartList] = useState([]);
 
@@ -178,9 +178,7 @@ const page = () => {
                             {/* add to cart */}
                           </div>
                         </td>
-                        <td className="p-4 font-medium">
-                          {item?.totalPrice}
-                        </td>
+                        <td className="p-4 font-medium">{item?.totalPrice}</td>
                       </tr>
                     ))
                   )}
@@ -196,48 +194,6 @@ const page = () => {
                 </button>
               </div>
             </div>
-            {/* Summary Sidebar */}
-            <div className=" mt-5 flex justify-end w-full">
-              <div className="lg:col-span-5 flex flex-col justify-end bg-white shadow rounded-lg p-6 space-y-4 w-[424px]">
-                <h2 className="text-xl font-medium">Card Totals</h2>
-                <div className="flex justify-between">
-                  <span>Sub‑total</span>
-                  <span>$320</span>
-                </div>
-                <div className="flex justify-between">
-                  <span>Shipping</span>
-                  <span>Free</span>
-                </div>
-                <div className="flex justify-between">
-                  <span>Discount</span>
-                  <span>−$24</span>
-                </div>
-                <div className="flex justify-between">
-                  <span>Tax</span>
-                  <span>$61.99</span>
-                </div>
-                <div className="border-t pt-4 flex justify-between text-lg font-semibold">
-                  <span>Total</span>
-                  <span>$357.99 USD</span>
-                </div>
-
-                <Link href="/checkout">
-                  <button className="w-full bg-[#FA8232] text-white py-3 rounded uppercase font-semibold cursor-pointer">
-                    PROCEED TO CHECKOUT →
-                  </button>
-                </Link>
-                <div className="border-t pt-4">
-                  <input
-                    type="text"
-                    placeholder="Coupon Code"
-                    className="w-full p-2 border rounded mb-2"
-                  />
-                  <button className="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600">
-                    APPLY COUPON
-                  </button>
-                </div>
-              </div>
-            </div>
           </div>
         </div>
       </Container>
@@ -245,4 +201,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default ShoppingCard;
