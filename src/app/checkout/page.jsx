@@ -1,115 +1,127 @@
 "use client";
+
 import Breadcrumb from "@/components/common/Breadcrumb";
 import Container from "@/components/common/Container";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { IoIosArrowDown } from "react-icons/io";
 import ShoppinCard from "@/components/allComponents/cart/ShoppincCard";
-
+import { useSelector } from "react-redux";
+import axios from "axios";
+import toast, { Toaster } from "react-hot-toast";
 const CheckoutPage = () => {
-  // Form state
+  const user = useSelector((state) => state.auth.userInfo);
+  // console.log(user?._id)
+  const [cartList, setCartlist] = useState([]);
+  const [cardTotal, setCardTotal] = useState(null);
+  const [paymentMethod, setPaymentMethod] = useState("COD");
+  const [errorMsg, setErrorMsg] = useState("");
+  const [successMsg, setSuccessMsg] = useState("");
+  const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
-    firstName: "",
-    lastName: "",
-    companyName: "",
-    address: "",
-    country: "",
-    region: "",
-    city: "",
-    postcode: "",
+    name: "",
     email: "",
     phone: "",
+    address: "",
+    city: "",
+    state: "",
+    postcode: "",
   });
 
-  // Payment method state (default to COD)
-  const [paymentMethod, setPaymentMethod] = useState("COD");
+  useEffect(() => {
+    if (!user?._id) return;
+    axios
+      .get(
+        `${process.env.NEXT_PUBLIC_URL}/api/v1/cart/get-cartbyuserid/${user._id}`
+      )
+      .then((res) => {
+        setCartlist(res.data.data);
+        console.log(res.data.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, [user?._id]);
 
-  // Loading state during order placement
-  const [loading, setLoading] = useState(false);
-
-  // Dummy cartItems and totalPrice, replace with real data from your store/context
-  const cartItems = [
-    { product: "productId123", quantity: 2, variant: "variantId456" },
-  ];
-  const totalPrice = 357.99;
-
-  // Handle input changes for text inputs
   const handleChange = (e) => {
-    const { id, value } = e.target;
-    setFormData((prev) => ({ ...prev, [id]: value }));
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   };
-
-  // Handle select inputs (country, region, city)
   const handleSelectChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
+    // const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
-
-  // Place order submit handler
+  // const totalPrice = 5000
   const handlePlaceOrder = async () => {
-    // Simple validation (expand as needed)
     if (
+      !formData.name ||
+      !formData.email ||
+      !formData.phone ||
       !formData.address ||
       !formData.city ||
-      !formData.phone ||
-      !paymentMethod
+      !formData.state ||
+      !formData.postcode
     ) {
-      alert("Please fill in all required fields.");
+      setErrorMsg("Please fill all the fields");
       return;
     }
 
-    if (paymentMethod === "ONLINE") {
-      alert("Online payment selected. This feature is not implemented yet.");
-      return;
-    }
-
-    setLoading(true);
-
-    const user = `${formData.firstName} ${formData.lastName}`;
+    const order = {
+      user: user?._id,
+      cartItems: cartList.map((item) => ({
+        product: item.product._id,
+        quantity: item.quantity,
+        // variant: item.variant?._id || null,
+      })),
+      name: formData.name,
+      email: formData.email,
+      phone: formData.phone,
+      address: formData.address,
+      city: formData.city,
+      state: formData.state,
+      postcode: formData.postcode,
+      paymentMethod: paymentMethod.toUpperCase(),
+    };
 
     try {
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_URL}/api/v1/order/place-order`,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            user,
-            phone: formData.phone,
-            address: formData.address,
-            city: formData.city,
-            postcode: formData.postcode,
-            paymentMethod,
-            cartItems,
-            totalprice: totalPrice,
-          }),
-        }
-      );
+      const res = await axios
+        .post(`${process.env.NEXT_PUBLIC_URL}/api/v1/order/place-order`, order)
+        .then((res) => {
+          console.log(res.data.data);
 
-      const data = await response.json();
-
-      if (data.success) {
-        alert("Order placed successfully!");
-        // You can clear form/cart or redirect here
-      } else {
-        alert("Failed to place order: " + data.message);
-      }
-    } catch (error) {
-      alert("Error: " + error.message);
-    } finally {
-      setLoading(false);
+          toast.success("Order Placed Successfull!");
+        });
+    } catch (err) {
+      console.log(err);
     }
   };
 
   return (
     <div>
+      <Toaster position="top-center" reverseOrder={false} />
       <Breadcrumb />
       <Container>
         <ShoppinCard />
         <div className="flex justify-between gap-6 mt-10">
-          <div className="font-public-sans mb-10">
+          <div className="font-public-sans mb-10 w-[60%]">
             <h2 className="font-medium text-[18px] leading-6 text-[#191C1F]">
               Billing Information
             </h2>
+            {cartList && (
+              <p className="mt-2 text-sm leading-5">
+                You have {cartList.length} items in your cart
+              </p>
+            )}
+
+            {/* Show error/success messages */}
+            {errorMsg && (
+              <div className="text-red-600 mt-2 mb-4 font-semibold">
+                {errorMsg}
+              </div>
+            )}
+            {successMsg && (
+              <div className="text-green-600 mt-2 mb-4 font-semibold">
+                {successMsg}
+              </div>
+            )}
 
             {/* User Name */}
             <div className="flex gap-4 items-center mt-6">
@@ -120,19 +132,12 @@ const CheckoutPage = () => {
                 <div className="mt-2 flex gap-4">
                   <input
                     type="text"
-                    id="firstName"
-                    placeholder="First name"
-                    value={formData.firstName}
+                    name="name"
+                    placeholder="Full Name"
+                    value={formData.name}
                     onChange={handleChange}
-                    className="w-[206px] p-3 border-[1.5px] border-[#E4E7E9] rounded-[2px] text-[#77878F] text-sm leading-5 outline-none"
-                  />
-                  <input
-                    type="text"
-                    id="lastName"
-                    placeholder="Last name"
-                    value={formData.lastName}
-                    onChange={handleChange}
-                    className="w-[206px] p-3 border-[1.5px] border-[#E4E7E9] rounded-[2px] text-[#77878F] text-sm leading-5 outline-none"
+                    className="w-[390px] p-3 border-[1.5px] border-[#E4E7E9] rounded-[2px] text-[#77878F] text-sm leading-5 outline-none"
+                    required
                   />
                 </div>
               </div>
@@ -140,38 +145,38 @@ const CheckoutPage = () => {
               {/* Company Name */}
               <div>
                 <label htmlFor="companyName" className="text-sm leading-5">
-                  Company Name{" "}
-                  <span className="text-[#929FA5]">(Optional)</span>
+                  Address
                 </label>
                 <div className="mt-2">
                   <input
                     type="text"
-                    id="companyName"
-                    placeholder="Company Name (Optional)"
-                    value={formData.companyName}
+                    name="address"
+                    placeholder="Address"
+                    value={formData.address}
                     onChange={handleChange}
-                    className="w-[428px] p-3 border-[1.5px] border-[#E4E7E9] rounded-[2px] text-[#77878F] text-sm leading-5 outline-none"
+                    className="w-[390px] p-3 border-[1.5px] border-[#E4E7E9] rounded-[2px] text-[#77878F] text-sm leading-5 outline-none"
                   />
                 </div>
               </div>
             </div>
 
             {/* Address */}
-            <div className="mt-4">
+            {/* <div className="mt-4">
               <label htmlFor="address" className="text-sm leading-5">
                 Address
               </label>
               <div className="mt-2">
                 <input
                   type="text"
-                  id="address"
+                  name="address"
                   placeholder="Address"
                   value={formData.address}
                   onChange={handleChange}
-                  className="w-[872px] p-3 border-[1.5px] border-[#E4E7E9] rounded-[2px] text-[#77878F] text-sm leading-5 outline-none"
+                  className="w-full p-3 border-[1.5px] border-[#E4E7E9] rounded-[2px] text-[#77878F] text-sm leading-5 outline-none"
+                  required
                 />
               </div>
-            </div>
+            </div> */}
 
             {/* Country, Region, City, Postcode */}
             <div className="flex gap-4 items-center mt-4">
@@ -183,12 +188,12 @@ const CheckoutPage = () => {
                     name="country"
                     value={formData.country}
                     onChange={handleSelectChange}
-                    className="w-[206px] p-3 border-[1.5px] border-[#E4E7E9] rounded-[2px] text-[#77878F] text-sm outline-none appearance-none"
+                    className="w-full p-3 border-[1.5px] border-[#E4E7E9] rounded-[2px] text-[#77878F] text-sm outline-none appearance-none"
                   >
                     <option value="">Select...</option>
                     <option value="Bangladesh">Bangladesh</option>
                   </select>
-                  <div className="flex items-center absolute right-5 text-xl text-[#ADB7BC] top-1/2 -translate-y-1/2">
+                  <div className="flex items-center absolute right-5 text-xl text-[#ADB7BC] top-1/2 -translate-y-1/2 pointer-events-none">
                     <IoIosArrowDown className="w-5 h-5" />
                   </div>
                 </div>
@@ -199,17 +204,17 @@ const CheckoutPage = () => {
                 <div className="relative mt-2">
                   <select
                     id="region"
-                    name="region"
-                    value={formData.region}
+                    name="state"
+                    value={formData.state}
                     onChange={handleSelectChange}
-                    className="w-[206px] p-3 border-[1.5px] border-[#E4E7E9] rounded-[2px] text-[#77878F] text-sm outline-none appearance-none"
+                    className="w-full p-3 border-[1.5px] border-[#E4E7E9] rounded-[2px] text-[#77878F] text-sm outline-none appearance-none"
                   >
                     <option value="">Select...</option>
                     <option value="Dhaka">Dhaka</option>
                     <option value="Chattogram">Chattogram</option>
                     <option value="Sylhet">Sylhet</option>
                   </select>
-                  <div className="flex items-center absolute right-5 text-xl text-[#ADB7BC] top-1/2 -translate-y-1/2">
+                  <div className="flex items-center absolute right-5 text-xl text-[#ADB7BC] top-1/2 -translate-y-1/2 pointer-events-none">
                     <IoIosArrowDown className="w-5 h-5" />
                   </div>
                 </div>
@@ -223,14 +228,15 @@ const CheckoutPage = () => {
                     name="city"
                     value={formData.city}
                     onChange={handleSelectChange}
-                    className="w-[206px] p-3 border-[1.5px] border-[#E4E7E9] rounded-[2px] text-[#77878F] text-sm outline-none appearance-none"
+                    className="w-full p-3 border-[1.5px] border-[#E4E7E9] rounded-[2px] text-[#77878F] text-sm outline-none appearance-none"
+                    required
                   >
                     <option value="">Select...</option>
                     <option value="Dhaka">Dhaka</option>
                     <option value="Narayonganj">Narayonganj</option>
                     <option value="Gazipur">Gazipur</option>
                   </select>
-                  <div className="flex items-center absolute right-5 text-xl text-[#ADB7BC] top-1/2 -translate-y-1/2">
+                  <div className="flex items-center absolute right-5 text-xl text-[#ADB7BC] top-1/2 -translate-y-1/2 pointer-events-none">
                     <IoIosArrowDown className="w-5 h-5" />
                   </div>
                 </div>
@@ -241,7 +247,7 @@ const CheckoutPage = () => {
                 <div className="mt-2">
                   <input
                     type="text"
-                    id="postcode"
+                    name="postcode"
                     placeholder="ZIP Code"
                     value={formData.postcode}
                     onChange={handleChange}
@@ -253,34 +259,35 @@ const CheckoutPage = () => {
 
             {/* Email and Phone */}
             <div className="flex items-center gap-4 mt-6">
-              <div>
+              <div className="w-[50%]">
                 <label htmlFor="email" className="text-sm leading-5">
                   Email
                 </label>
                 <div className="mt-2">
                   <input
                     type="email"
-                    id="email"
+                    name="email"
                     placeholder="Enter your email"
                     value={formData.email}
                     onChange={handleChange}
-                    className="w-[428px] p-3 border-[1.5px] border-[#E4E7E9] rounded-[2px] text-[#77878F] text-sm outline-none"
+                    className="w-full p-3 border-[1.5px] border-[#E4E7E9] rounded-[2px] text-[#77878F] text-sm outline-none"
                   />
                 </div>
               </div>
 
-              <div>
+              <div className="w-[50%]">
                 <label htmlFor="phone" className="text-sm leading-5">
                   Phone Number
                 </label>
                 <div className="mt-2">
                   <input
                     type="text"
-                    id="phone"
+                    name="phone"
                     placeholder="Phone number"
                     value={formData.phone}
                     onChange={handleChange}
-                    className="w-[428px] p-3 border-[1.5px] border-[#E4E7E9] rounded-[2px] text-[#77878F] text-sm outline-none"
+                    className="w-full p-3 border-[1.5px] border-[#E4E7E9] rounded-[2px] text-[#77878F] text-sm outline-none"
+                    required
                   />
                 </div>
               </div>
@@ -288,9 +295,9 @@ const CheckoutPage = () => {
           </div>
 
           {/* Payment Summary & Payment Method */}
-          <div className="border-1 border-[#E4E7E9] rounded-[4px] h-fit font-public-sans p-6">
+          <div className="border-1 border-[#E4E7E9] rounded-[4px] h-fit font-public-sans p-6 w-[35%]">
             <div>
-              <h3>Payment Method</h3>
+              <h3 className="mb-4 text-lg font-semibold">Payment Method</h3>
               <div className="space-y-3">
                 <label className="flex items-center gap-3 p-3 border rounded-lg cursor-pointer hover:bg-gray-100 transition">
                   <input
@@ -323,11 +330,12 @@ const CheckoutPage = () => {
             </div>
 
             {/* Summary */}
-            <div className="mt-5 flex w-full">
-              <div className="bg-white rounded-lg space-y-4 w-[424px]">
+            <div className="mt-6 flex w-full">
+              <div className="bg-white rounded-lg space-y-4 w-full p-6 shadow-md">
                 <div className="flex justify-between">
                   <span className="text-[#5F6C72] text-sm">Sub‑total</span>
-                  <span>${totalPrice.toFixed(2)}</span>
+                  <span>$500</span>
+                  {/* <span>${totalPrice.toFixed(2)}</span> */}
                 </div>
                 <div className="flex justify-between">
                   <span className="text-[#5F6C72] text-sm">Shipping</span>
@@ -343,12 +351,12 @@ const CheckoutPage = () => {
                 </div>
                 <div className="border-t pt-4 flex justify-between text-lg font-semibold">
                   <span>Total</span>
-                  <span>${totalPrice.toFixed(2)} USD</span>
+                  <span>$500 USD</span>
                 </div>
                 <button
                   disabled={loading}
                   onClick={handlePlaceOrder}
-                  className="w-full bg-[#FA8232] text-white py-5 rounded uppercase font-bold cursor-pointer disabled:opacity-50"
+                  className="w-full bg-[#FA8232] text-white py-5 rounded uppercase font-bold cursor-pointer disabled:opacity-50 mt-6"
                 >
                   {loading ? "Placing order..." : "Place order →"}
                 </button>

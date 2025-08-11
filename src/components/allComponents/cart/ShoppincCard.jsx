@@ -122,7 +122,6 @@ const ShoppingCard = () => {
                             onClick={() => handleDeleteCart(item?._id)}
                             className="w-6 h-6 text-[#929FA5] hover:text-[#EE5858] cursor-pointer"
                           />
-                          {console.log(item.totalPrice)}
                           <img
                             src={
                               item?.product?.thumbnail || item?.product?.image
@@ -186,9 +185,11 @@ const ShoppingCard = () => {
               </table>
               <div className="border-t-1 mt-3 border-[#E4E7E9]"></div>
               <div className="mt-6 font-Poppins leading-6 flex justify-between">
-                <button className="font-medium py-4 px-12 border-[2px] border-[#2DA5F3] flex items-center gap-2 text-[#2DA5F3] rounded-[4px] uppercase">
-                  <HiArrowLongLeft className="w-6 h-6" /> Return To Shop
-                </button>
+                <Link href="/shop">
+                  <button className="font-medium py-4 px-12 border-[2px] border-[#2DA5F3] flex items-center gap-2 text-[#2DA5F3] rounded-[4px] uppercase">
+                    <HiArrowLongLeft className="w-6 h-6" /> Return To Shop
+                  </button>
+                </Link>
                 <button className="font-medium py-4 px-12 border-[2px] border-[#2DA5F3] text-[#2DA5F3] rounded-[4px] uppercase">
                   Update Cart
                 </button>

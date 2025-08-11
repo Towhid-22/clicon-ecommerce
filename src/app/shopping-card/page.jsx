@@ -122,7 +122,6 @@ const page = () => {
                             onClick={() => handleDeleteCart(item?._id)}
                             className="w-6 h-6 text-[#929FA5] hover:text-[#EE5858] cursor-pointer"
                           />
-                          {console.log(item.totalPrice)}
                           <img
                             src={
                               item?.product?.thumbnail || item?.product?.image
