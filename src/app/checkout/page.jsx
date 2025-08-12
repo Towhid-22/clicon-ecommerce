@@ -46,10 +46,9 @@ const CheckoutPage = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
   const handleSelectChange = (e) => {
-    // const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
-  // const totalPrice = 5000
+
   const handlePlaceOrder = async () => {
     if (
       !formData.name ||
@@ -79,15 +78,20 @@ const CheckoutPage = () => {
       state: formData.state,
       postcode: formData.postcode,
       paymentMethod: paymentMethod.toUpperCase(),
+      paymentStatus: paymentMethod === "online" ? "paid" : "notpaid",
     };
 
     try {
       const res = await axios
         .post(`${process.env.NEXT_PUBLIC_URL}/api/v1/order/place-order`, order)
         .then((res) => {
-          console.log(res.data.data);
-
-          toast.success("Order Placed Successfull!");
+          if (res.data.success) {
+            toast.success("Order Placed Successfull!");
+            if (res.data.paymenturl) {
+              window.location.href = res.data.paymenturl;
+            }
+          }
+          // console.log(res.data.data);
         });
     } catch (err) {
       console.log(err);
@@ -159,24 +163,6 @@ const CheckoutPage = () => {
                 </div>
               </div>
             </div>
-
-            {/* Address */}
-            {/* <div className="mt-4">
-              <label htmlFor="address" className="text-sm leading-5">
-                Address
-              </label>
-              <div className="mt-2">
-                <input
-                  type="text"
-                  name="address"
-                  placeholder="Address"
-                  value={formData.address}
-                  onChange={handleChange}
-                  className="w-full p-3 border-[1.5px] border-[#E4E7E9] rounded-[2px] text-[#77878F] text-sm leading-5 outline-none"
-                  required
-                />
-              </div>
-            </div> */}
 
             {/* Country, Region, City, Postcode */}
             <div className="flex gap-4 items-center mt-4">
