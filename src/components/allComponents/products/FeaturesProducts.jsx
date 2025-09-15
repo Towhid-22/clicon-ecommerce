@@ -48,6 +48,8 @@ const FeaturesProducts = () => {
     activeTab == "All Product"
       ? featureProduct
       : featureProduct.filter((item) => item.category?.name == activeTab);
+
+      
   if (loading) {
     return (
       <Container>
