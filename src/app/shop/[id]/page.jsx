@@ -67,7 +67,7 @@ const page = () => {
 
   return (
     <div>
-        <Toaster position="top-center" reverseOrder={false} />
+      <Toaster position="top-center" reverseOrder={false} />
       <Breadcrumb />
       <div className="mt-8">
         <Container>
@@ -240,17 +240,16 @@ const page = () => {
                     </button>
                     {/* add to cart */}
                   </div>
-                  <div className="">
+                  <div className=""></div>
+                  <div className=" flex gap-3">
+                    <button className="w-[142px] h-[56px] flex items-center justify-center border-2 border-[#FA8232] rounded-[3px] uppercase font-bold gap-2  text-[#FA8232] cursor-pointer">
+                      Buy now
+                    </button>
                     <button
                       onClick={handleAddToCart}
                       className="w-[310px] h-[56px] bg-[#FA8232] flex items-center justify-center rounded-[3px] uppercase font-bold gap-2  text-white cursor-pointer"
                     >
                       Add to card <PiShoppingCartSimple className="w-6 h-6" />
-                    </button>
-                  </div>
-                  <div className="">
-                    <button className="w-[142px] h-[56px] flex items-center justify-center border-2 border-[#FA8232] rounded-[3px] uppercase font-bold gap-2  text-[#FA8232] cursor-pointer">
-                      Buy now
                     </button>
                   </div>
                 </div>

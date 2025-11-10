@@ -20,12 +20,12 @@ const Signin = () => {
   const [showPassword, setShowPassword] = useState(false);
   const togglePassword = () => setShowPassword((prev) => !prev);
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
     setLoading(true);
 
     try {
-      const res = axios
+      const res = await axios
         .post(
           `${process.env.NEXT_PUBLIC_URL}/api/v1/auth/login`,
           {
@@ -42,10 +42,10 @@ const Signin = () => {
             toast.success("Login Successfull!");
           }
         });
-      } catch (err) {
-        toast.error(err.response.data.message || "Something went wrong");
-      } finally {
-        setLoading(false);
+    } catch (err) {
+      toast.error(err.response.data.message || "Something went wrong");
+    } finally {
+      setLoading(false);
     }
   };
 
