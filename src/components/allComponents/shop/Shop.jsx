@@ -13,8 +13,6 @@ import Sort from "./Sort";
 import Breadcrumb from "@/components/common/Breadcrumb";
 
 const Shop = () => {
-  
- 
   return (
     <div className="flex gap-6 mt-10 ">
       <div className="w-[25%]">

@@ -10,6 +10,7 @@ import NewProduct from "@/components/allComponents/new-product/NewProduct";
 import Overview from "@/components/allComponents/overview/Overview";
 import Subscribe from "@/components/allComponents/subscribe/Subscribe";
 import UserPopup from "@/components/allComponents/account/UserPopup";
+import CartPage from "@/components/allComponents/cart/CartPage";
 
 const page = () => {
   return (

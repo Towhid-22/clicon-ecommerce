@@ -98,6 +98,14 @@ const CheckoutPage = () => {
     }
   };
 
+  const subTotal = cartList?.reduce(
+    (acc, item) => (acc + item.price || 0) * (item.quantity || 0),
+    0
+  );
+  const discount = subTotal > 200 ? subTotal * 0.05 : 0;
+  const tax = subTotal * 0.1;
+  const total = subTotal - discount + tax;
+
   return (
     <div>
       <Toaster position="top-center" reverseOrder={false} />
@@ -320,7 +328,7 @@ const CheckoutPage = () => {
               <div className="bg-white rounded-lg space-y-4 w-full p-6 shadow-md">
                 <div className="flex justify-between">
                   <span className="text-[#5F6C72] text-sm">Sub‑total</span>
-                  <span>$500</span>
+                  <span>${subTotal.toFixed(2)}</span>
                   {/* <span>${totalPrice.toFixed(2)}</span> */}
                 </div>
                 <div className="flex justify-between">
@@ -329,15 +337,15 @@ const CheckoutPage = () => {
                 </div>
                 <div className="flex justify-between">
                   <span className="text-[#5F6C72] text-sm">Discount</span>
-                  <span>$24.00</span>
+                  <span>−${discount.toFixed(2)}</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-[#5F6C72] text-sm">Tax</span>
-                  <span>$61.99</span>
+                  <span>${tax.toFixed(2)}</span>
                 </div>
                 <div className="border-t pt-4 flex justify-between text-lg font-semibold">
                   <span>Total</span>
-                  <span>$500 USD</span>
+                  <span>${total.toFixed(2)}</span>
                 </div>
                 <button
                   disabled={loading}

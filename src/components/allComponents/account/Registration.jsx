@@ -47,7 +47,9 @@ const Registration = () => {
   const handleSignUp = (e) => {
     e.preventDefault();
     axios
-      .post(`${process.env.NEXT_PUBLIC_URL}/api/v1/auth/signup`, userInfo)
+      .post(`${process.env.NEXT_PUBLIC_URL}/api/v1/auth/signup`, userInfo, {
+        withCredentials: true,
+      })
       .then((res) => {
         if (res.data.success) {
           dispatch(UserInfoSet(res.data));

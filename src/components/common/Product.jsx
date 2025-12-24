@@ -9,7 +9,6 @@ import Image from "next/image";
 import Link from "next/link";
 
 const Product = ({ product, id, onClick }) => {
-
   return (
     <div
       onClick={onClick}

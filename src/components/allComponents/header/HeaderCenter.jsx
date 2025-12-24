@@ -24,48 +24,33 @@ const HeaderCenter = () => {
   const searchRef = useRef(null);
   const [manageUser, setManageUser] = useState(false);
   const [searchProduct, setSearchProduct] = useState([]);
-  // useEffect(() => {
-  //   const handleClickOutside = (event) => {
-  //     if (cartRef.current && !cartRef.current.contains(event.target)) {
-  //       setCartList(false);
-  //     }
-  //     if (signinRef.current && !signinRef.current.contains(event.target)) {
-  //       setSignin(false);
-  //     }
-  //     if (userRef.current && !userRef.current.contains(event.target)) {
-  //       setManageUser(false);
-  //     }
-  //     if (searchRef.current && !searchRef.current.contains(event.target)) {
-  //       setSearchProduct(false);
-  //     }
-  //   };
-  //   document.addEventListener("click", handleClickOutside);
-  //   return () => {
-  //     document.removeEventListener("click", handleClickOutside);
-  //   };
-  // }, []);
 
   useEffect(() => {
-  const handleClickOutside = (event) => {
-    const clickedNode = event.target;
-    const isInsideCart = cartRef.current?.contains(clickedNode);
-    const isInsideSignin = signinRef.current?.contains(clickedNode);
-    const isInsideUser = userRef.current?.contains(clickedNode);
-    const isInsideSearch = searchRef.current?.contains(clickedNode);
+    const handleClickOutside = (event) => {
+      const clickedNode = event.target;
+      const isInsideCart = cartRef.current?.contains(clickedNode);
+      const isInsideSignin = signinRef.current?.contains(clickedNode);
+      const isInsideUser = userRef.current?.contains(clickedNode);
+      const isInsideSearch = searchRef.current?.contains(clickedNode);
 
-    if (!isInsideCart && !isInsideSignin && !isInsideUser && !isInsideSearch) {
-      setCartList(false);
-      setSignin(false);
-      setManageUser(false);
-      setSearchProduct(false);
-    }
-  };
+      if (
+        !isInsideCart &&
+        !isInsideSignin &&
+        !isInsideUser &&
+        !isInsideSearch
+      ) {
+        setCartList(false);
+        setSignin(false);
+        setManageUser(false);
+        setSearchProduct(false);
+      }
+    };
 
-  document.addEventListener("click", handleClickOutside);
-  return () => {
-    document.removeEventListener("click", handleClickOutside);
-  };
-}, []);
+    document.addEventListener("click", handleClickOutside);
+    return () => {
+      document.removeEventListener("click", handleClickOutside);
+    };
+  }, []);
 
   const handleSearchProducts = (e) => {
     e.preventDefault();
@@ -104,10 +89,21 @@ const HeaderCenter = () => {
             />
             <IoIosSearch className="absolute right-5 text-xl top-1/2 translate-y-[-50%]  text-[#191C1F]" />
             {searchProduct.length > 0 && (
-              <div ref={searchRef} className="absolute z-50  top-[110%] p-3 w-full left-0 rounded-none bg-white shadow-[0px_2px_5px_0.01px_rgba(0,0,0,0.2)]">
+              <div
+                ref={searchRef}
+                className="absolute z-50  top-[110%] p-3 w-full left-0 rounded-none bg-white shadow-[0px_2px_5px_0.01px_rgba(0,0,0,0.2)]"
+              >
                 {searchProduct.map((item) => (
-                  <Link key={item._id} href={`/shop/${item.slug}`} className="flex items-center gap-3 border-b-[1px] border-[#929FA5] py-2 cursor-pointer">
-                    <img className="w-15 h-15" src={item.thumbnail}  alt={item.title} />
+                  <Link
+                    key={item._id}
+                    href={`/shop/${item.slug}`}
+                    className="flex items-center gap-3 border-b-[1px] border-[#929FA5] py-2 cursor-pointer"
+                  >
+                    <img
+                      className="w-15 h-15"
+                      src={item.thumbnail}
+                      alt={item.title}
+                    />
                     <p>{item.title}</p>
                   </Link>
                 ))}

@@ -60,7 +60,6 @@ const CategoryList = () => {
   const [allCategory, setAllCategory] = useState([]);
   const [activeRadio, setActiveRadio] = useState("");
 
-
   useEffect(() => {
     function getCategories() {
       axios

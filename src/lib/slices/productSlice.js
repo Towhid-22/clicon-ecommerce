@@ -15,7 +15,6 @@ export const productSlice = createSlice({
     },
     pricerange: (state, action) => {
       state.pricerange = action.payload;
-      console.log("price range", action.payload);
     },
     currProduct: (state, action) => {
       state.currentProduct = action.payload;

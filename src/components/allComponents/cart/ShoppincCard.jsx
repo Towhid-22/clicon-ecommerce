@@ -34,7 +34,7 @@ const ShoppingCard = () => {
         alert(err.response.data.message || "Something went wrong");
       });
   };
-
+  console.log(cartList);
   const handleDecrement = (id, quantity) => {
     if (quantity == 1) return;
     const newQty = quantity - 1;
@@ -77,14 +77,17 @@ const ShoppingCard = () => {
         { withCredentials: true }
       )
       .then((res) => {
-        // window.location.reload();
-        // পেজ রিলোড না করে state আপডেট
         setCartList((prev) => prev.filter((item) => item._id !== id));
       })
       .catch((err) => {
         console.log(err);
       });
   };
+
+  const total = cartList?.reduce(
+    (acc, item) => (acc + item.price || 0) * (item.quantity || 0),
+    0
+  );
 
   return (
     <div>
@@ -93,7 +96,7 @@ const ShoppingCard = () => {
           <div className="">
             {/* Products Table */}
             <div className=" bg-white shadow rounded-lg w-full p-3">
-              <h1 className="text-3xl font-bold mb-6">Shopping Cart</h1>
+              <h1 className="text-3xl font-bold mb-6">Checkout</h1>
               <table className="w-full">
                 <thead className="bg-gray-100">
                   <tr className="text-gray-600 text-left">
@@ -177,7 +180,11 @@ const ShoppingCard = () => {
                             {/* add to cart */}
                           </div>
                         </td>
-                        <td className="p-4 font-medium">{item?.totalPrice}</td>
+                        <td className="p-4 font-medium">
+                          {(
+                            (item.product?.price || 0) * (item.quantity || 0)
+                          ).toFixed(2)}
+                        </td>
                       </tr>
                     ))
                   )}
