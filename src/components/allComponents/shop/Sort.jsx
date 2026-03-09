@@ -1,4 +1,5 @@
-import React from "react";
+"use client";
+import React, { useEffect, useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Search } from "lucide-react";
 import {
@@ -10,22 +11,48 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { useDispatch } from "react-redux";
+import { sortProduct } from "@/lib/slices/productSlice";
 
 const Sort = () => {
+  const dispatch = useDispatch();
+
   const sortby = [
     {
       id: 1,
-      name: "Most Popular",
+      value: "newest",
+      label: "Newest",
     },
     {
       id: 2,
-      name: "Newest",
+      value: "oldest",
+      label: "Oldest",
     },
     {
       id: 3,
-      name: "Oldest",
+      value: "low_to_high",
+      label: "Low to High",
+    },
+    {
+      id: 4,
+      value: "high_to_low",
+      label: "High to Low",
+    },
+    {
+      id: 5,
+      value: "name_asc",
+      label: "A-Z",
+    },
+    {
+      id: 6,
+      value: "name_desc",
+      label: "Z-A",
     },
   ];
+  const [sortItem, setSortItem] = useState(sortby[0].value);
+  useEffect(() => {
+    dispatch(sortProduct(sortItem));
+  });
   return (
     <div>
       <div className="flex justify-between items-center">
@@ -41,17 +68,17 @@ const Sort = () => {
             Sort by:
           </h3>
           <div>
-            <Select>
+            <Select value={sortItem} onValueChange={setSortItem}>
               <SelectTrigger className="w-[180px]">
                 <SelectValue placeholder="Most Popular" />
               </SelectTrigger>
               <SelectContent>
                 <SelectGroup>
-                  <SelectItem value="apple">Most Popular</SelectItem>
-                  <SelectItem value="banana">Newest</SelectItem>
-                  <SelectItem value="blueberry">Oldest</SelectItem>
-                  <SelectItem value="grapes">Grapes</SelectItem>
-                  <SelectItem value="pineapple">Pineapple</SelectItem>
+                  {sortby.map((item) => (
+                    <SelectItem key={item.id} value={item.value}>
+                      {item.label}
+                    </SelectItem>
+                  ))}
                 </SelectGroup>
               </SelectContent>
             </Select>
@@ -59,8 +86,13 @@ const Sort = () => {
         </div>
       </div>
       <div className="bg-[#F2F4F5] flex items-center justify-between rounded-[4px] mb-6">
-        <h3 className="font-poppins text-sm leading-5 text-[#5F6C72] p-4">Active Filters:</h3>
-        <h4 className="font-poppins text-sm leading-5 text-[#5F6C72] p-4"><span className="text-[#191C1F] font-semibold">65,867</span> Results found.</h4>
+        <h3 className="font-poppins text-sm leading-5 text-[#5F6C72] p-4">
+          Active Filters:
+        </h3>
+        <h4 className="font-poppins text-sm leading-5 text-[#5F6C72] p-4">
+          <span className="text-[#191C1F] font-semibold">65,867</span> Results
+          found.
+        </h4>
       </div>
     </div>
   );
