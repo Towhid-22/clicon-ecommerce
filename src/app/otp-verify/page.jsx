@@ -7,8 +7,7 @@ import { useRouter } from "next/navigation";
 
 const page = () => {
   const router = useRouter();
-  const user = useSelector((state) => state.auth.userInfo.user);
-  console.log(user);
+  const user = useSelector((state) => state.auth?.userInfo?.user);
   const [otp, setOtp] = useState({
     otp1: "",
     otp2: "",
