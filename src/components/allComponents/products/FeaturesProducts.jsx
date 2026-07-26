@@ -25,7 +25,7 @@ const FeaturesProducts = () => {
 
   function getFeaturesProducts() {
     axios
-      .get(`http://localhost:4000/api/v1/product/get-features-products`)
+      .get(`${process.env.NEXT_PUBLIC_URL}/api/v1/product/get-features-products`)
       .then((res) => {
         setFeatureProduct(res.data.data);
         setLoading(false);
@@ -49,7 +49,6 @@ const FeaturesProducts = () => {
       ? featureProduct
       : featureProduct.filter((item) => item.category?.name == activeTab);
 
-      
   if (loading) {
     return (
       <Container>
@@ -111,7 +110,7 @@ const FeaturesProducts = () => {
                   filterProduct?.map((item, index) => (
                     <Product key={index} id={index} product={item} />
                   ))
-                )} 
+                )}
               </div>
             </div>
           </div>
