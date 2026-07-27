@@ -31,7 +31,7 @@ const CheckoutPage = () => {
     if (!user?._id) return;
     axios
       .get(
-        `${process.env.NEXT_PUBLIC_URL}/api/v1/cart/get-cartbyuserid/${user._id}`
+        `${process.env.NEXT_PUBLIC_URL}/api/v1/cart/get-cartbyuserid/${user._id}`,
       )
       .then((res) => {
         setCartlist(res.data.data);
@@ -49,6 +49,12 @@ const CheckoutPage = () => {
     setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
+  const subTotal = cartList.reduce((acc, item) => {
+    return acc + (item.price || 0) * (item.quantity || 0);
+  }, 0);
+  const discount = subTotal > 200 ? subTotal * 0.05 : 0;
+  const tax = subTotal * 0.1;
+  const total = subTotal - discount + tax;
   const handlePlaceOrder = async () => {
     if (
       !formData.name ||
@@ -79,6 +85,7 @@ const CheckoutPage = () => {
       postcode: formData.postcode,
       paymentMethod: paymentMethod.toUpperCase(),
       paymentStatus: paymentMethod === "online" ? "paid" : "notpaid",
+      totalPrice: total,
     };
 
     try {
@@ -97,14 +104,6 @@ const CheckoutPage = () => {
       console.log(err);
     }
   };
-
-  const subTotal = cartList?.reduce(
-    (acc, item) => (acc + item.price || 0) * (item.quantity || 0),
-    0
-  );
-  const discount = subTotal > 200 ? subTotal * 0.05 : 0;
-  const tax = subTotal * 0.1;
-  const total = subTotal - discount + tax;
 
   return (
     <div>
