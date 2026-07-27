@@ -9,8 +9,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { UserInfoSet } from "@/lib/slices/authSlice";
 import Registration from "./Registration";
 import toast, { Toaster } from "react-hot-toast";
+import { useRouter } from "next/navigation";
 
 const Signin = () => {
+  const user = useSelector((state) => state.auth.userInfo);
+  const router = useRouter();
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
   const [email, setEmail] = useState("");
@@ -22,31 +25,31 @@ const Signin = () => {
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    setLoading(true);
-
-    try {
-      const res = await axios
-        .post(
-          `${process.env.NEXT_PUBLIC_URL}/api/v1/auth/login`,
-          {
-            email,
-            password,
-          },
-          {
-            withCredentials: true,
-          }
-        )
-        .then((res) => {
-          if (res.data.success === true) {
-            dispatch(UserInfoSet(res.data.data));
-            toast.success("Login Successfull!");
-          }
-        });
-    } catch (err) {
-      toast.error(err.response.data.message || "Something went wrong");
-    } finally {
-      setLoading(false);
+    if (email == "") {
+      return setEmailError("Email is required");
     }
+    if (password == "") {
+      return setPasswordError("Password is required");
+    }
+    axios
+      .post(
+        `${process.env.NEXT_PUBLIC_URL}/api/v1/auth/login`,
+        { email, password },
+        { withCredentials: true },
+      )
+      .then((res) => {
+        if (res.data.success === true) {
+          dispatch(UserInfoSet(res.data.data));
+          toast.success("Login Successfull!");
+        }
+        router.push("/");
+        setTimeout(() => {
+          window.location.reload(true);
+        }, 2000);
+      })
+      .catch((error) => {
+        toast.error(error?.response?.data?.message);
+      });
   };
 
   return (
